@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador Guerras Tribales - Export BBCode</title>
+    <title>Planificador Guerras Tribales - Órdenes BBCode</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0f1117;--sur:#1a1d27;--sur2:#23263a;--brd:#2e3145;--acc:#7c6af7;--acc2:#5b8cf5;--gold:#f5c542;--grn:#4caf7d;--red:#e05252;--txt:#e8eaf6;--txt2:#8b90b0;--r:12px}
@@ -11,35 +11,26 @@
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 14px}
         .wrap{max-width:1100px;margin:0 auto}
         h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:20px}
-        .tabs{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
-        .tab{padding:10px 20px;border-radius:8px;border:2px solid var(--brd);background:var(--sur);color:var(--txt2);font-weight:600;cursor:pointer;transition:0.2s}
-        .tab.on{border-color:var(--acc);color:var(--acc);background:rgba(124,106,247,.1)}
         .card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:20px;margin-bottom:15px}
-        label{display:block;font-size:.75rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase}
+        label{display:block;font-size:.75rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;font-weight:700}
         input, textarea, select{width:100%;padding:10px;background:var(--sur2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:inherit;outline:none}
-        textarea{font-family:monospace;font-size:0.85rem}
-        .btn{padding:10px 16px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size: 0.85rem;}
+        .btn{padding:10px 16px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
         .bp{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
-        .bs{background:var(--gold);color:#000}
-        .bg{background:var(--sur2);color:var(--txt);border:1px solid var(--brd)}
-        .btn:hover{opacity:0.9;transform:translateY(-1px)}
+        .bs{background:var(--gold);color:#000; width: 100%; margin-bottom: 15px; font-size: 1rem; border: 2px solid #fff}
+        .bg{background:var(--brd);color:var(--txt);font-size: 0.7rem; padding: 5px 8px}
         .ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:15px}
         .ub{background:var(--sur2);border:2px solid var(--brd);border-radius:8px;padding:8px;text-align:center;cursor:pointer}
         .ub.sel{border-color:var(--acc);background:rgba(124,106,247,.15)}
-        table{width:100%;border-collapse:collapse;margin-top:15px}
-        th{text-align:left;padding:12px;background:var(--sur2);color:var(--txt2);font-size:0.75rem}
+        table{width:100%;border-collapse:collapse}
+        th{text-align:left;padding:12px;background:var(--sur2);color:var(--txt2);font-size:0.75rem;border-bottom: 2px solid var(--brd)}
         td{padding:10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
+        .copy-flash{color: var(--grn); font-size: 0.7rem; font-weight: bold}
     </style>
 </head>
 <body>
 
 <div class="wrap">
     <h1>⚔️ Planificador de Guerras Tribales</h1>
-
-    <div class="tabs">
-        <button class="tab on" id="tab-fks" onclick="switchTab('fks')">🎭 Generador Fakes</button>
-        <button class="tab" id="tab-info">ℹ️ Instrucciones</button>
-    </div>
 
     <!-- CONFIGURACIÓN DE MUNDO -->
     <div class="card">
@@ -62,54 +53,51 @@
     </div>
 
     <!-- GENERADOR DE FAKES -->
-    <div id="mode-fks">
-        <div class="card">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-                <div>
-                    <label>🎯 Objetivos (Enemigos)</label>
-                    <textarea id="ta-tgt-fk" rows="8" placeholder="Enemigo1 400|400&#10;Enemigo2 401|401"></textarea>
-                </div>
-                <div>
-                    <label>💪 Atacantes (Aliados)</label>
-                    <textarea id="ta-atk-fk" rows="8" placeholder="Aliado1 500|500&#10;Aliado2 501|501"></textarea>
-                </div>
+    <div class="card">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+            <div>
+                <label>🎯 Objetivos (Enemigos)</label>
+                <textarea id="ta-tgt-fk" rows="8" placeholder="Enemigo1 400|400"></textarea>
             </div>
-            
-            <div style="margin-top:15px">
-                <label>Unidad más lenta:</label>
-                <div class="ugrid" id="ugrid-fakes"></div>
+            <div>
+                <label>💪 Atacantes (Aliados)</label>
+                <textarea id="ta-atk-fk" rows="8" placeholder="Aliado1 500|500"></textarea>
             </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:10px">
-                <div><label>Fecha Llegada</label><input type="date" id="fk-date"></div>
-                <div><label>Hora Llegada</label><input type="time" id="fk-time" value="08:00:00" step="1"></div>
-            </div>
-
-            <button class="btn bp" style="width:100%; margin-top:15px" onclick="calcFakes()">🚀 Generar Lista de Fakes</button>
+        </div>
+        
+        <div style="margin-top:15px">
+            <label>Unidad más lenta:</label>
+            <div class="ugrid" id="ugrid-fakes"></div>
         </div>
 
-        <!-- RESULTADOS -->
-        <div id="fk-result-card" class="card" style="display:none">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                <h3 style="margin:0">Horarios Calculados</h3>
-                <button class="btn bs" onclick="copyAllBB()">📋 Copiar Todo (Foro)</button>
-            </div>
-            <div style="overflow-x:auto">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Lanzar el</th>
-                            <th>Atacante</th>
-                            <th>Origen</th>
-                            <th>Hacia</th>
-                            <th>Objetivo</th>
-                            <th>Órdenes</th>
-                            <th>🚀</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fk-body"></tbody>
-                </table>
-            </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+            <div><label>Fecha Llegada</label><input type="date" id="fk-date"></div>
+            <div><label>Hora Llegada</label><input type="time" id="fk-time" value="08:00:00" step="1"></div>
+        </div>
+
+        <button class="btn bp" style="width:100%; margin-top:15px" onclick="calcFakes()">🚀 Generar Lista de Horarios</button>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="fk-result-card" class="card" style="display:none">
+        <button class="btn bs" onclick="copyAllBB()">📋 COPIAR TODAS LAS ÓRDENES (Para el Foro)</button>
+        <div id="copy-msg" style="text-align:center; margin-bottom:10px"></div>
+        
+        <div style="overflow-x:auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lanzar el</th>
+                        <th>Atacante</th>
+                        <th>Origen</th>
+                        <th>Hacia</th>
+                        <th>Objetivo</th>
+                        <th>Copiar</th>
+                        <th>🚀</th>
+                    </tr>
+                </thead>
+                <tbody id="fk-body"></tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -124,7 +112,7 @@
 
     let S = { unitFk: 'ram', results: [] };
 
-    // --- SISTEMA DE CARGA DE MUNDOS ---
+    // --- MUNDOS ---
     async function twLoadWorlds() {
         const srv = document.getElementById('w-server').value;
         const wl = document.getElementById('w-world');
@@ -142,18 +130,18 @@
             let m;
             while ((m = regex.exec(html)) !== null) { if(!worlds.includes(m[1])) worlds.push(m[1]); }
             renderWorlds(worlds, prefix);
-            st.innerText = "✅ Listo";
+            st.innerText = "✅ Mundos actualizados";
         } catch(e) {
             if(prefix === 'es') {
-                renderWorlds(['104','103','102','101','100','99','98','p24','c4'], 'es');
-                st.innerText = "⚠️ Modo Emergencia Activo";
+                renderWorlds(['105','104','103','102','101','100','99','p24','c4'], 'es');
+                st.innerText = "⚠️ Usando lista de emergencia";
             }
         }
     }
 
     function renderWorlds(list, prefix) {
         const wl = document.getElementById('w-world');
-        wl.innerHTML = '<option value="">Mundos...</option>';
+        wl.innerHTML = '<option value="">Selecciona Mundo...</option>';
         list.sort((a,b)=>b.localeCompare(a, undefined, {numeric:true})).forEach(w=>{
             let opt = document.createElement('option');
             opt.value = prefix+w; opt.innerText = (prefix+w).toUpperCase();
@@ -169,18 +157,19 @@
             const url = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://'+w+'.'+domain+'/interface.php?func=get_config')}`;
             const res = await fetch(url);
             const xml = await res.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(xml, "text/xml");
+            const doc = new DOMParser().parseFromString(xml, "text/xml");
             const s = parseFloat(doc.querySelector('speed').textContent);
             const us = parseFloat(doc.querySelector('unit_speed').textContent);
             document.getElementById('world-unit-speed').value = (s * us).toFixed(3);
-        } catch(e) { console.log("Manual"); }
+        } catch(e) { console.log("Carga manual de velocidad"); }
     }
 
-    // --- LOGICA DE CALCULOS ---
+    // --- LÓGICA ---
     function parseInput(text) {
         const data = [];
         text.split('\n').forEach(line => {
+            line = line.trim();
+            if(!line) return;
             const m = line.match(/^(.+?)\s+(\d{1,3})\|(\d{1,3})$/);
             if(m) data.push({ p: m[1].trim(), x: parseInt(m[2]), y: parseInt(m[3]) });
             else {
@@ -207,8 +196,8 @@
         atks.forEach((a, i) => {
             const t = tgts[i % tgts.length]; 
             const dist = Math.sqrt(Math.pow(a.x - t.x, 2) + Math.pow(a.y - t.y, 2));
-            const travelMin = (dist * unit.spd) / wSpd;
-            const launchDate = new Date(arrivalMs - travelMin * 60000);
+            const travelMs = ((dist * unit.spd) / wSpd) * 60000;
+            const launchDate = new Date(arrivalMs - travelMs);
 
             S.results.push({
                 launch: launchDate,
@@ -228,26 +217,27 @@
         let html = '';
         S.results.forEach((r, i) => {
             html += `<tr>
-                <td style="color:var(--gold)">${r.launch.toLocaleString()}</td>
+                <td style="color:var(--gold); font-weight:bold">${r.launch.toLocaleString()}</td>
                 <td><b>${r.attacker}</b></td>
                 <td>${r.origin}</td>
                 <td>→</td>
                 <td>${r.targetP} (${r.target})</td>
-                <td><button class="btn bg" onclick="copySingleBB(${i})">Copiar</button></td>
-                <td><button class="btn bp" style="padding:5px 10px" onclick="window.open('${r.url}')">🚀</button></td>
+                <td><button class="btn bg" onclick="copySingleBB(${i}, this)">Copiar</button></td>
+                <td><button class="btn bp" style="padding:5px" onclick="window.open('${r.url}')">🚀</button></td>
             </tr>`;
         });
         document.getElementById('fk-body').innerHTML = html;
         document.getElementById('fk-result-card').style.display = 'block';
     }
 
-    // --- SISTEMA DE COPIADO BBCODE ---
-
-    function copySingleBB(index) {
+    // --- COPIADO ---
+    function copySingleBB(index, btn) {
         const r = S.results[index];
         const bb = `[b]Lanzar:[/b] ${r.launch.toLocaleString()} [b]Desde:[/b] [coord]${r.origin}[/coord] [b]Hacia:[/b] [coord]${r.target}[/coord] [b]Unidad:[/b] ${r.unit}`;
         navigator.clipboard.writeText(bb);
-        alert("Órden copiada para " + r.attacker);
+        const oldText = btn.innerText;
+        btn.innerText = "✅";
+        setTimeout(() => btn.innerText = oldText, 2000);
     }
 
     function copyAllBB() {
@@ -267,7 +257,8 @@
         }
         
         navigator.clipboard.writeText(bb);
-        alert("BBCode total copiado al portapapeles. ¡Listo para pegar en el foro!");
+        document.getElementById('copy-msg').innerHTML = "<b class='copy-flash'>¡Copiado todo el BBCode para el foro!</b>";
+        setTimeout(() => document.getElementById('copy-msg').innerHTML = "", 4000);
     }
 
     function buildUnitGrid() {
@@ -275,10 +266,6 @@
             <div class="ub ${u.id===S.unitFk?'sel':''}" onclick="S.unitFk='${u.id}';buildUnitGrid()">
                 <div style="font-size:1.2rem">${u.e}</div><div style="font-size:0.6rem">${u.nm}</div>
             </div>`).join('');
-    }
-
-    function switchTab(t) {
-        document.getElementById('mode-fks').style.display = 'block';
     }
 
     window.onload = () => {
