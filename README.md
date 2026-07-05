@@ -1,127 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planificador Guerras Tribales - Fix España</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#0f1117;--sur:#1a1d27;--sur2:#23263a;--brd:#2e3145;--acc:#7c6af7;--acc2:#5b8cf5;--gold:#f5c542;--grn:#4caf7d;--red:#e05252;--txt:#e8eaf6;--txt2:#8b90b0;--r:12px}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 14px}
-.wrap{max-width:1200px;margin:0 auto;padding:0 4px}
-h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
-.sub{text-align:center;color:var(--txt2);font-size:.87rem;margin-bottom:22px}
-.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:22px;flex-wrap:wrap}
-.tab{padding:9px 22px;border-radius:8px;border:2px solid var(--brd);background:var(--sur);color:var(--txt2);font-family:'Inter',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
-.tab.on{border-color:var(--acc);color:var(--acc);background:rgba(124,106,247,.1)}
-.tab:hover{border-color:var(--acc)}
-.card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:18px;margin-bottom:14px}
-.ct{font-size:.95rem;font-weight:600;margin-bottom:13px;display:flex;align-items:center;gap:8px}
-.ico{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-label{display:block;font-size:.73rem;font-weight:500;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
-input[type=text],input[type=number],input[type=date],input[type=time],textarea,select{width:100%;padding:8px 12px;background:var(--sur2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-size:.87rem;font-family:'Inter',sans-serif;outline:none}
-textarea{resize:vertical;font-family:'Courier New',monospace;font-size:.8rem}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;font-weight:600;cursor:pointer;transition:all .2s}
-.bp{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
-.bg{background:var(--sur2);color:var(--txt);border:1px solid var(--brd)}
-.alert{padding:9px 13px;border-radius:8px;font-size:.82rem;margin-bottom:12px}
-.as{background:rgba(76,175,125,.12);border:1px solid rgba(76,175,125,.3);color:#6de0a8}
-.ae{background:rgba(224,82,82,.12);border:1px solid rgba(224,82,82,.3);color:#ff8080}
-.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-bottom:12px}
-.ub{background:var(--sur2);border:2px solid var(--brd);border-radius:9px;padding:7px 4px;cursor:pointer;text-align:center}
-.ub.sel{border-color:var(--acc);background:rgba(124,106,247,.12)}
-table{width:100%;border-collapse:collapse;font-size:.83rem}
-th{background:var(--sur2);padding:9px;text-align:left;color:var(--txt2)}
-td{padding:8px;border-bottom:1px solid rgba(46,49,69,.4)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador Guerras Tribales - Final Fix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0f1117;--sur:#1a1d27;--sur2:#23263a;--brd:#2e3145;--acc:#7c6af7;--acc2:#5b8cf5;--gold:#f5c542;--grn:#4caf7d;--red:#e05252;--txt:#e8eaf6;--txt2:#8b90b0;--r:12px}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 14px}
+        .wrap{max-width:1100px;margin:0 auto}
+        h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:20px}
+        .tabs{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+        .tab{padding:10px 20px;border-radius:8px;border:2px solid var(--brd);background:var(--sur);color:var(--txt2);font-weight:600;cursor:pointer;transition:0.2s}
+        .tab.on{border-color:var(--acc);color:var(--acc);background:rgba(124,106,247,.1)}
+        .card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:20px;margin-bottom:15px}
+        label{display:block;font-size:.75rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase}
+        input, textarea, select{width:100%;padding:10px;background:var(--sur2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:inherit;outline:none}
+        textarea{font-family:monospace;font-size:0.85rem}
+        .btn{padding:12px 20px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+        .bp{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
+        .bp:hover{opacity:0.9;transform:translateY(-1px)}
+        .ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:15px}
+        .ub{background:var(--sur2);border:2px solid var(--brd);border-radius:8px;padding:8px;text-align:center;cursor:pointer}
+        .ub.sel{border-color:var(--acc);background:rgba(124,106,247,.15)}
+        table{width:100%;border-collapse:collapse;margin-top:15px}
+        th{text-align:left;padding:12px;background:var(--sur2);color:var(--txt2);font-size:0.75rem}
+        td{padding:10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
+        .alert{padding:10px;border-radius:8px;margin-bottom:10px;font-size:0.85rem}
+        .as{background:rgba(76,175,125,.1);color:var(--grn);border:1px solid var(--grn)}
+    </style>
 </head>
 <body>
 
 <div class="wrap">
-    <h1>⚔️ Planificador Guerras Tribales</h1>
-    <p class="sub">Gestión Estratégica · Versión Corregida (.es)</p>
+    <h1>⚔️ Planificador de Guerras Tribales</h1>
 
     <div class="tabs">
-        <button class="tab on" id="tab-trp" onclick="switchTab('trp')">💪 Tropas</button>
-        <button class="tab" id="tab-atk" onclick="switchTab('atk')">⚔️ Ataques</button>
-        <button class="tab" id="tab-fks" onclick="switchTab('fks')">🎭 Fakes</button>
+        <button class="tab on" id="tab-trp" onclick="switchTab('trp')">💪 Tropas / Atacantes</button>
+        <button class="tab" id="tab-fks" onclick="switchTab('fks')">🎭 Generador Fakes</button>
     </div>
 
-    <!-- CONFIG VELOCIDAD -->
+    <!-- CONFIGURACIÓN DE MUNDO -->
     <div class="card">
-        <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
-            <span style="font-weight:600">⚡ Velocidad Mundo:</span>
-            <input type="number" id="world-unit-speed" value="1" step="0.1" style="width:80px">
-            
-            <div style="display:flex; gap:10px; align-items:center">
-                <span style="font-size:0.8rem; color:var(--txt2)">🌐 Servidor:</span>
-                <select id="w-server" onchange="twLoadWorlds()" style="width:auto">
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; align-items:end">
+            <div>
+                <label>⚡ Velocidad del Mundo</label>
+                <input type="number" id="world-unit-speed" value="1.0" step="0.1">
+            </div>
+            <div>
+                <label>🌐 Servidor</label>
+                <select id="w-server" onchange="twLoadWorlds()">
                     <option value="">Selecciona...</option>
                     <option value="es_guerrastribales.es_es">España (.es)</option>
                     <option value="en_tribalwars.net_www">Internacional (.net)</option>
-                    <option value="pt_tribos.com.pt_pt">Portugal (.pt)</option>
                 </select>
-                <select id="w-world" onchange="twApplyConfig()" disabled style="width:auto">
-                    <option value="">Mundos...</option>
-                </select>
-                <span id="w-status" style="font-size:0.75rem; color:var(--gold)"></span>
+            </div>
+            <div>
+                <label>🌍 Mundo</label>
+                <select id="w-world" onchange="twApplyConfig()" disabled><option value="">Mundos...</option></select>
             </div>
         </div>
+        <div id="w-status" style="font-size:0.7rem; margin-top:5px; color:var(--gold)"></div>
     </div>
 
-    <!-- SECCIÓN TROPAS -->
+    <!-- PESTAÑA TROPAS (PARA ATAQUE REAL) -->
     <div id="mode-trp">
         <div class="card">
-            <div class="ct"><div class="ico">💪</div> Cargar Tropas (JSON o Manual)</div>
-            <textarea id="ta-troops" rows="5" placeholder="Pega aquí el JSON o lista: Jugador 500|500"></textarea>
-            <button class="btn bp" style="width:100%; margin-top:10px" onclick="analyzeTroops()">Cargar Atacantes</button>
-            <div id="m-trp"></div>
+            <label>Cargar Atacantes (Formato: Jugador 500|500)</label>
+            <textarea id="ta-troops" rows="6" placeholder="Paco 500|500&#10;Juan 501|501"></textarea>
+            <button class="btn bp" style="width:100%; margin-top:10px" onclick="loadAtacantes()">Cargar Jugadores Atacantes</button>
+            <div id="m-trp" style="margin-top:10px"></div>
         </div>
     </div>
 
-    <!-- SECCIÓN ATAQUES -->
-    <div id="mode-atk" style="display:none">
-        <div class="card">
-            <div class="ct"><div class="ico">🎯</div> Configurar Ofensiva</div>
-            <div class="ugrid" id="ugrid-atk"></div>
-            <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:12px">
-                <div class="fg">
-                    <label>Pueblos Objetivo (Ej: Paco 450|450)</label>
-                    <textarea id="atk-tgt" rows="5" placeholder="Pega los objetivos aquí..."></textarea>
-                </div>
-                <div class="fg">
-                    <label>Fecha Llegada</label>
-                    <input type="date" id="atk-date">
-                </div>
-                <div class="fg">
-                    <label>Hora Llegada</label>
-                    <input type="time" id="atk-time" value="08:00:00" step="1">
-                </div>
-            </div>
-            <button class="btn bp" style="width:100%; margin-top:10px" onclick="calcAtk()">Calcular Horarios</button>
-            <div id="m-atk"></div>
-        </div>
-        <div id="atk-result" class="card" style="display:none">
-            <table>
-                <thead>
-                    <tr><th>Lanzar el</th><th>Atacante</th><th>Desde</th><th>Hacia</th><th>🚀</th></tr>
-                </thead>
-                <tbody id="atk-body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- SECCIÓN FAKES -->
+    <!-- PESTAÑA FAKES -->
     <div id="mode-fks" style="display:none">
         <div class="card">
-            <div class="ct"><div class="ico">🎭</div> Generador de Fakes</div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px">
-                <div><label>Objetivos (Enemigos)</label><textarea id="ta-tgt-fk" rows="6" placeholder="Paco 400|400"></textarea></div>
-                <div><label>Atacantes (Tus pueblos)</label><textarea id="ta-atk-fk" rows="6" placeholder="MiPueblo 500|500"></textarea></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+                <div>
+                    <label>🎯 Objetivos (Enemigos)</label>
+                    <textarea id="ta-tgt-fk" rows="8" placeholder="Enemigo1 400|400&#10;Enemigo2 401|401"></textarea>
+                </div>
+                <div>
+                    <label>💪 Atacantes (Tus pueblos)</label>
+                    <textarea id="ta-atk-fk" rows="8" placeholder="MiPueblo1 500|500&#10;MiPueblo2 501|501"></textarea>
+                </div>
             </div>
-            <button class="btn bp" style="width:100%; margin-top:10px" onclick="calcFakes()">Generar Fakes</button>
-            <div id="fk-result"></div>
+            
+            <div style="margin-top:15px">
+                <label>Unidad más lenta:</label>
+                <div class="ugrid" id="ugrid-fakes"></div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:10px">
+                <div><label>Fecha Llegada</label><input type="date" id="fk-date"></div>
+                <div><label>Hora Llegada</label><input type="time" id="fk-time" value="08:00:00" step="1"></div>
+            </div>
+
+            <button class="btn bp" style="width:100%; margin-top:15px" onclick="calcFakes()">🚀 Generar Lista de Horarios</button>
+        </div>
+
+        <div id="fk-result-card" class="card" style="display:none">
+            <h3 style="margin-bottom:10px">Horarios Calculados</h3>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lanzar el</th>
+                            <th>Atacante</th>
+                            <th>Origen</th>
+                            <th>Hacia</th>
+                            <th>Objetivo</th>
+                            <th>🚀</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fk-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -134,55 +130,44 @@ td{padding:8px;border-bottom:1px solid rgba(46,49,69,.4)}
         {id:'ram',nm:'Ariete',spd:30,e:'🔨'},{id:'snob',nm:'Noble',spd:35,e:'📜'}
     ];
 
-    let S = { unitAtk: 'axe', troopData: [] };
+    let S = { unitFk: 'ram', attackers: [], targets: [] };
 
-    // --- FIX ESPAÑA: CARGA DE MUNDOS CON LISTA DE EMERGENCIA ---
+    // --- CARGA DE MUNDOS (FIX ESPAÑA) ---
     async function twLoadWorlds() {
-        const srvValue = document.getElementById('w-server').value;
+        const srv = document.getElementById('w-server').value;
         const wl = document.getElementById('w-world');
         const st = document.getElementById('w-status');
-        wl.innerHTML = '<option value="">Cargando...</option>';
+        if(!srv) return;
+        
+        const [prefix, domain, tws] = srv.split('_');
         wl.disabled = true;
-
-        if(!srvValue) return;
-        const [prefix, domain, tws] = srvValue.split('_');
-
-        // Controlador de tiempo para evitar que se quede colgado
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        st.innerText = "⏳ Conectando con el servidor...";
 
         try {
             const url = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://' + tws + '.twstats.com/')}`;
-            const res = await fetch(url, { signal: controller.signal });
+            const res = await fetch(url);
             const html = await res.text();
-            
             const worlds = [];
             const regex = new RegExp(`data-world="${prefix}(\\d+|p\\d+|c\\d+|s\\d+)"`, 'g');
             let m;
             while ((m = regex.exec(html)) !== null) { if(!worlds.includes(m[1])) worlds.push(m[1]); }
-            
-            if(worlds.length === 0) throw new Error();
-            renderWorldOptions(worlds, prefix);
-            st.innerHTML = "✅ Mundos cargados.";
+            renderWorlds(worlds, prefix);
+            st.innerText = "✅ Lista actualizada.";
         } catch(e) {
-            // LISTA DE EMERGENCIA SI FALLA LA WEB
             if(prefix === 'es') {
-                const fallback = ['104','103','102','101','100','99','98','97','96','95','p24','p23','c4'];
-                renderWorldOptions(fallback, 'es');
-                st.innerHTML = "⚠️ Servidor lento. Cargando lista guardada.";
-            } else {
-                st.innerHTML = "❌ Error de conexión.";
+                const fallback = ['104','103','102','101','100','99','98','p24','p23','c4'];
+                renderWorlds(fallback, 'es');
+                st.innerText = "⚠️ Servidor ocupado. Usando lista de emergencia.";
             }
         }
     }
 
-    function renderWorldOptions(worlds, prefix) {
+    function renderWorlds(list, prefix) {
         const wl = document.getElementById('w-world');
         wl.innerHTML = '<option value="">Mundos...</option>';
-        worlds.sort((a,b) => b.localeCompare(a, undefined, {numeric: true})).forEach(w => {
-            const opt = document.createElement('option');
-            opt.value = prefix + w;
-            opt.textContent = (prefix + w).toUpperCase();
+        list.sort((a,b)=>b.localeCompare(a, undefined, {numeric:true})).forEach(w=>{
+            let opt = document.createElement('option');
+            opt.value = prefix+w; opt.innerText = (prefix+w).toUpperCase();
             wl.appendChild(opt);
         });
         wl.disabled = false;
@@ -192,102 +177,86 @@ td{padding:8px;border-bottom:1px solid rgba(46,49,69,.4)}
         const w = document.getElementById('w-world').value;
         const domain = document.getElementById('w-server').value.split('_')[1];
         try {
-            const url = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://' + w + '.' + domain + '/interface.php?func=get_config')}`;
+            const url = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://'+w+'.'+domain+'/interface.php?func=get_config')}`;
             const res = await fetch(url);
             const xml = await res.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(xml, "text/xml");
-            const speed = parseFloat(doc.querySelector('speed').textContent);
-            const uSpeed = parseFloat(doc.querySelector('unit_speed').textContent);
-            document.getElementById('world-unit-speed').value = (speed * uSpeed).toFixed(3);
-        } catch(e) { console.log("Usando velocidad manual."); }
+            const s = parseFloat(doc.querySelector('speed').textContent);
+            const us = parseFloat(doc.querySelector('unit_speed').textContent);
+            document.getElementById('world-unit-speed').value = (s * us).toFixed(3);
+        } catch(e) { console.log("Error config. Usar manual."); }
     }
 
-    // --- PARSER MANUAL MEJORADO (Nombre + Coordenada) ---
-    function parseManualInput(text) {
+    // --- PARSER ---
+    function parseInput(text) {
         const data = [];
         const lines = text.split('\n');
-        for (let line of lines) {
-            line = line.trim();
-            if (!line) continue;
-            // Busca cualquier nombre seguido de coordenadas
+        lines.forEach(line => {
             const m = line.match(/^(.+?)\s+(\d{1,3})\|(\d{1,3})$/);
-            if (m) {
-                data.push({ player: m[1].trim(), x: parseInt(m[2]), y: parseInt(m[3]) });
-            } else {
-                const mOnly = line.match(/^(\d{1,3})\|(\d{1,3})$/);
-                if (mOnly) data.push({ player: "Manual", x: parseInt(mOnly[1]), y: parseInt(mOnly[2]) });
+            if(m) data.push({ p: m[1].trim(), x: parseInt(m[2]), y: parseInt(m[3]) });
+            else {
+                const m2 = line.match(/(\d{1,3})\|(\d{1,3})/);
+                if(m2) data.push({ p: 'Manual', x: parseInt(m2[1]), y: parseInt(m2[2]) });
             }
-        }
+        });
         return data;
     }
 
-    // --- LÓGICA GENERAL ---
+    // --- LÓGICA TABS ---
     function switchTab(t) {
-        ['trp','atk','fks'].forEach(id => {
-            document.getElementById('mode-'+id).style.display = (t===id) ? 'block' : 'none';
-            document.getElementById('tab-'+id).classList.toggle('on', t===id);
-        });
+        document.getElementById('mode-trp').style.display = t==='trp'?'block':'none';
+        document.getElementById('mode-fks').style.display = t==='fks'?'block':'none';
+        document.getElementById('tab-trp').classList.toggle('on', t==='trp');
+        document.getElementById('tab-fks').classList.toggle('on', t==='fks');
     }
 
-    function buildUnits() {
-        document.getElementById('ugrid-atk').innerHTML = UNITS.map(u => `
-            <div class="ub ${u.id===S.unitAtk?'sel':''}" onclick="S.unitAtk='${u.id}';buildUnits()">
-                <div style="font-size:1.2rem">${u.e}</div><div style="font-size:0.7rem">${u.nm}</div>
+    // --- GENERAR FAKES ---
+    function calcFakes() {
+        const tgts = parseInput(document.getElementById('ta-tgt-fk').value);
+        const atks = parseInput(document.getElementById('ta-atk-fk').value);
+        const date = document.getElementById('fk-date').value;
+        const time = document.getElementById('fk-time').value;
+
+        if(!date || !time || !atks.length || !tgts.length) return alert("Faltan datos (Atacantes, Objetivos, Fecha o Hora)");
+
+        const arrivalMs = new Date(`${date}T${time}`).getTime();
+        const unit = UNITS.find(u => u.id === S.unitFk);
+        const wSpd = parseFloat(document.getElementById('world-unit-speed').value) || 1;
+        const worldStr = document.getElementById('w-world').value || 'es100';
+
+        let html = '';
+        atks.forEach((a, index) => {
+            // Asignación simple: Atacante 1 va al Objetivo 1, Atacante 2 al Objetivo 2...
+            const t = tgts[index % tgts.length]; 
+            const dist = Math.sqrt(Math.pow(a.x - t.x, 2) + Math.pow(a.y - t.y, 2));
+            const travelMin = (dist * unit.spd) / wSpd;
+            const launchDate = new Date(arrivalMs - travelMin * 60000);
+
+            html += `<tr>
+                <td style="color:var(--gold)">${launchDate.toLocaleString()}</td>
+                <td><b>${a.p}</b></td>
+                <td>${a.x}|${a.y}</td>
+                <td><span style="color:var(--txt2)">→</span></td>
+                <td>${t.p} (${t.x}|${t.y})</td>
+                <td><button class="btn bp" style="padding:5px 10px; font-size:0.7rem" onclick="window.open('https://${worldStr}.guerrastribales.es/game.php?screen=place&target=${t.x}${t.y}')">🚀</button></td>
+            </tr>`;
+        });
+
+        document.getElementById('fk-body').innerHTML = html;
+        document.getElementById('fk-result-card').style.display = 'block';
+    }
+
+    function buildUnitGrid() {
+        document.getElementById('ugrid-fakes').innerHTML = UNITS.map(u => `
+            <div class="ub ${u.id===S.unitFk?'sel':''}" onclick="S.unitFk='${u.id}';buildUnitGrid()">
+                <div style="font-size:1.2rem">${u.e}</div><div style="font-size:0.6rem">${u.nm}</div>
             </div>`).join('');
     }
 
-    function analyzeTroops() {
-        const raw = document.getElementById('ta-troops').value.trim();
-        try {
-            S.troopData = JSON.parse(raw);
-            document.getElementById('m-trp').innerHTML = `<div class="alert as">✅ ${S.troopData.length} pueblos cargados desde JSON.</div>`;
-        } catch(e) {
-            const manual = parseManualInput(raw);
-            if(manual.length > 0) {
-                S.troopData = manual;
-                document.getElementById('m-trp').innerHTML = `<div class="alert as">✅ ${manual.length} pueblos manuales cargados con sus nombres.</div>`;
-            } else {
-                document.getElementById('m-trp').innerHTML = `<div class="alert ae">❌ Formato no reconocido.</div>`;
-            }
-        }
-    }
-
-    function calcAtk() {
-        const date = document.getElementById('atk-date').value;
-        const time = document.getElementById('atk-time').value;
-        if(!date || !time) return alert("Pon fecha y hora");
-
-        const tgts = parseManualInput(document.getElementById('atk-tgt').value);
-        if(!tgts.length || !S.troopData.length) return alert("Faltan atacantes u objetivos.");
-
-        const arrivalMs = new Date(`${date}T${time}`).getTime();
-        const unit = UNITS.find(u => u.id === S.unitAtk);
-        const wSpd = parseFloat(document.getElementById('world-unit-speed').value) || 1;
-
-        let html = '';
-        tgts.forEach(t => {
-            S.troopData.forEach(orig => {
-                const dist = Math.sqrt(Math.pow(orig.x - t.x, 2) + Math.pow(orig.y - t.y, 2));
-                const launchMs = arrivalMs - ((dist * unit.spd) / wSpd) * 60000;
-                const launch = new Date(launchMs);
-                html += `<tr>
-                    <td>${launch.toLocaleString()}</td>
-                    <td>${orig.player}</td>
-                    <td>${orig.x}|${orig.y}</td>
-                    <td>${t.player} (${t.x}|${t.y})</td>
-                    <td><button class="btn bg" onclick="window.open('https://${document.getElementById('w-server').value.split('_')[1]}/game.php?screen=place&target=${t.x}${t.y}')">🚀</button></td>
-                </tr>`;
-            });
-        });
-        document.getElementById('atk-body').innerHTML = html;
-        document.getElementById('atk-result').style.display = 'block';
-    }
-
-    window.onload = () => { 
-        buildUnits();
-        const now = new Date();
-        document.getElementById('atk-date').value = now.toISOString().split('T')[0];
+    window.onload = () => {
+        buildUnitGrid();
+        document.getElementById('fk-date').value = new Date().toISOString().split('T')[0];
     };
 </script>
 </body>
