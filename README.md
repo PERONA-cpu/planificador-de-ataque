@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador Guerras Tribales - Órdenes BBCode</title>
+    <title>Planificador Guerras Tribales - Mensajería Individual</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0f1117;--sur:#1a1d27;--sur2:#23263a;--brd:#2e3145;--acc:#7c6af7;--acc2:#5b8cf5;--gold:#f5c542;--grn:#4caf7d;--red:#e05252;--txt:#e8eaf6;--txt2:#8b90b0;--r:12px}
@@ -16,15 +16,17 @@
         input, textarea, select{width:100%;padding:10px;background:var(--sur2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:inherit;outline:none}
         .btn{padding:10px 16px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
         .bp{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
-        .bs{background:var(--gold);color:#000; width: 100%; margin-bottom: 15px; font-size: 1rem; border: 2px solid #fff}
+        .bs{background:var(--gold);color:#000; font-size: 1rem; border: 2px solid #fff}
+        .bm{background:var(--acc2); color:#fff; font-size: 0.8rem; padding: 6px 12px}
         .bg{background:var(--brd);color:var(--txt);font-size: 0.7rem; padding: 5px 8px}
         .ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:15px}
         .ub{background:var(--sur2);border:2px solid var(--brd);border-radius:8px;padding:8px;text-align:center;cursor:pointer}
         .ub.sel{border-color:var(--acc);background:rgba(124,106,247,.15)}
         table{width:100%;border-collapse:collapse}
-        th{text-align:left;padding:12px;background:var(--sur2);color:var(--txt2);font-size:0.75rem;border-bottom: 2px solid var(--brd)}
+        th{text-align:left;padding:12px;background:var(--sur2);color:var(--txt2);font-size:0.75rem}
         td{padding:10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
-        .copy-flash{color: var(--grn); font-size: 0.7rem; font-weight: bold}
+        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:10px; margin-top:15px}
+        .msg-card{background:var(--sur2); padding:12px; border-radius:8px; border:1px solid var(--brd); display:flex; justify-content:space-between; align-items:center}
     </style>
 </head>
 <body>
@@ -32,7 +34,7 @@
 <div class="wrap">
     <h1>⚔️ Planificador de Guerras Tribales</h1>
 
-    <!-- CONFIGURACIÓN DE MUNDO -->
+    <!-- CONFIGURACIÓN -->
     <div class="card">
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; align-items:end">
             <div><label>⚡ Velocidad Mundo</label><input type="number" id="world-unit-speed" value="1.0" step="0.1"></div>
@@ -52,17 +54,11 @@
         <div id="w-status" style="font-size:0.7rem; margin-top:5px; color:var(--gold)"></div>
     </div>
 
-    <!-- GENERADOR DE FAKES -->
+    <!-- GENERADOR -->
     <div class="card">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div>
-                <label>🎯 Objetivos (Enemigos)</label>
-                <textarea id="ta-tgt-fk" rows="8" placeholder="Enemigo1 400|400"></textarea>
-            </div>
-            <div>
-                <label>💪 Atacantes (Aliados)</label>
-                <textarea id="ta-atk-fk" rows="8" placeholder="Aliado1 500|500"></textarea>
-            </div>
+            <div><label>🎯 Objetivos (Enemigos)</label><textarea id="ta-tgt-fk" rows="8" placeholder="Enemigo1 400|400"></textarea></div>
+            <div><label>💪 Atacantes (Aliados)</label><textarea id="ta-atk-fk" rows="8" placeholder="Aliado1 500|500"></textarea></div>
         </div>
         
         <div style="margin-top:15px">
@@ -78,11 +74,16 @@
         <button class="btn bp" style="width:100%; margin-top:15px" onclick="calcFakes()">🚀 Generar Lista de Horarios</button>
     </div>
 
-    <!-- RESULTADOS -->
+    <!-- MENSAJES INDIVIDUALES -->
+    <div id="player-messages-card" class="card" style="display:none; border-color: var(--acc2)">
+        <label style="color: var(--acc2)">📩 Centro de Mensajes Individuales (MP)</label>
+        <p style="font-size: 0.75rem; color: var(--txt2); margin-bottom: 10px">Haz clic para copiar el mensaje completo de cada jugador para enviárselo por MP.</p>
+        <div class="msg-grid" id="msg-grid"></div>
+    </div>
+
+    <!-- TABLA GENERAL -->
     <div id="fk-result-card" class="card" style="display:none">
-        <button class="btn bs" onclick="copyAllBB()">📋 COPIAR TODAS LAS ÓRDENES (Para el Foro)</button>
-        <div id="copy-msg" style="text-align:center; margin-bottom:10px"></div>
-        
+        <button class="btn bs" style="margin-bottom:15px; width:100%" onclick="copyAllBB()">📋 COPIAR TODO PARA EL FORO (Spoilers)</button>
         <div style="overflow-x:auto">
             <table>
                 <thead>
@@ -92,7 +93,6 @@
                         <th>Origen</th>
                         <th>Hacia</th>
                         <th>Objetivo</th>
-                        <th>Copiar</th>
                         <th>🚀</th>
                     </tr>
                 </thead>
@@ -110,17 +110,15 @@
         {id:'ram',nm:'Ariete',spd:30,e:'🔨'},{id:'snob',nm:'Noble',spd:35,e:'📜'}
     ];
 
-    let S = { unitFk: 'ram', results: [] };
+    let S = { unitFk: 'ram', results: [], grouped: {} };
 
     // --- MUNDOS ---
     async function twLoadWorlds() {
         const srv = document.getElementById('w-server').value;
         const wl = document.getElementById('w-world');
-        const st = document.getElementById('w-status');
         if(!srv) return;
         const [prefix, domain, tws] = srv.split('_');
         wl.disabled = true;
-        st.innerText = "⏳ Cargando...";
         try {
             const url = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://' + tws + '.twstats.com/')}`;
             const res = await fetch(url);
@@ -130,18 +128,14 @@
             let m;
             while ((m = regex.exec(html)) !== null) { if(!worlds.includes(m[1])) worlds.push(m[1]); }
             renderWorlds(worlds, prefix);
-            st.innerText = "✅ Mundos actualizados";
         } catch(e) {
-            if(prefix === 'es') {
-                renderWorlds(['105','104','103','102','101','100','99','p24','c4'], 'es');
-                st.innerText = "⚠️ Usando lista de emergencia";
-            }
+            renderWorlds(['105','104','103','102','101','100','99'], 'es');
         }
     }
 
     function renderWorlds(list, prefix) {
         const wl = document.getElementById('w-world');
-        wl.innerHTML = '<option value="">Selecciona Mundo...</option>';
+        wl.innerHTML = '<option value="">Mundos...</option>';
         list.sort((a,b)=>b.localeCompare(a, undefined, {numeric:true})).forEach(w=>{
             let opt = document.createElement('option');
             opt.value = prefix+w; opt.innerText = (prefix+w).toUpperCase();
@@ -161,7 +155,7 @@
             const s = parseFloat(doc.querySelector('speed').textContent);
             const us = parseFloat(doc.querySelector('unit_speed').textContent);
             document.getElementById('world-unit-speed').value = (s * us).toFixed(3);
-        } catch(e) { console.log("Carga manual de velocidad"); }
+        } catch(e) {}
     }
 
     // --- LÓGICA ---
@@ -193,72 +187,91 @@
         const worldStr = document.getElementById('w-world').value || 'es100';
 
         S.results = [];
+        S.grouped = {};
+
         atks.forEach((a, i) => {
             const t = tgts[i % tgts.length]; 
             const dist = Math.sqrt(Math.pow(a.x - t.x, 2) + Math.pow(a.y - t.y, 2));
             const travelMs = ((dist * unit.spd) / wSpd) * 60000;
             const launchDate = new Date(arrivalMs - travelMs);
 
-            S.results.push({
-                launch: launchDate,
+            const resObj = {
+                launch: launchDate.toLocaleString(),
                 attacker: a.p,
                 origin: `${a.x}|${a.y}`,
                 target: `${t.x}|${t.y}`,
                 targetP: t.p,
                 unit: unit.e,
                 url: `https://${worldStr}.guerrastribales.es/game.php?screen=place&target=${t.x}${t.y}`
-            });
+            };
+
+            S.results.push(resObj);
+            if(!S.grouped[a.p]) S.grouped[a.p] = [];
+            S.grouped[a.p].push(resObj);
         });
 
-        renderTable();
+        renderResults();
     }
 
-    function renderTable() {
+    function renderResults() {
+        // Tabla General
         let html = '';
-        S.results.forEach((r, i) => {
+        S.results.forEach(r => {
             html += `<tr>
-                <td style="color:var(--gold); font-weight:bold">${r.launch.toLocaleString()}</td>
+                <td style="color:var(--gold); font-weight:bold">${r.launch}</td>
                 <td><b>${r.attacker}</b></td>
                 <td>${r.origin}</td>
                 <td>→</td>
                 <td>${r.targetP} (${r.target})</td>
-                <td><button class="btn bg" onclick="copySingleBB(${i}, this)">Copiar</button></td>
                 <td><button class="btn bp" style="padding:5px" onclick="window.open('${r.url}')">🚀</button></td>
             </tr>`;
         });
         document.getElementById('fk-body').innerHTML = html;
         document.getElementById('fk-result-card').style.display = 'block';
+
+        // Botones Mensajes Individuales
+        let msgHtml = '';
+        Object.keys(S.grouped).sort().forEach(player => {
+            msgHtml += `
+                <div class="msg-card">
+                    <span style="font-weight:bold">${player}</span>
+                    <button class="btn bm" onclick="copyPlayerMessage('${player}', this)">📩 Copiar MP</button>
+                </div>`;
+        });
+        document.getElementById('msg-grid').innerHTML = msgHtml;
+        document.getElementById('player-messages-card').style.display = 'block';
     }
 
     // --- COPIADO ---
-    function copySingleBB(index, btn) {
-        const r = S.results[index];
-        const bb = `[b]Lanzar:[/b] ${r.launch.toLocaleString()} [b]Desde:[/b] [coord]${r.origin}[/coord] [b]Hacia:[/b] [coord]${r.target}[/coord] [b]Unidad:[/b] ${r.unit}`;
+    function copyPlayerMessage(player, btn) {
+        const orders = S.grouped[player];
+        let bb = `Hola [player]${player}[/player],\n\nAquí tienes tus órdenes de ataque:\n\n[table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Unidad[/**]\n`;
+        orders.forEach(r => {
+            bb += `[*]${r.launch}[|][coord]${r.origin}[/coord][|][coord]${r.target}[/coord][|]${r.unit}\n`;
+        });
+        bb += `[/table]\n\nPor favor, confirma participación. ¡Gracias!`;
+        
         navigator.clipboard.writeText(bb);
         const oldText = btn.innerText;
-        btn.innerText = "✅";
-        setTimeout(() => btn.innerText = oldText, 2000);
+        btn.innerText = "✅ ¡Copiado!";
+        btn.style.background = "var(--grn)";
+        setTimeout(() => {
+            btn.innerText = oldText;
+            btn.style.background = "var(--acc2)";
+        }, 2000);
     }
 
     function copyAllBB() {
-        const grouped = {};
-        S.results.forEach(r => {
-            if(!grouped[r.attacker]) grouped[r.attacker] = [];
-            grouped[r.attacker].push(r);
-        });
-
-        let bb = `[b]📅 PLANIFICACIÓN DE FAKES[/b]\n\n`;
-        for (const player in grouped) {
-            bb += `[player]${player}[/player]\n[spoiler=Tus fakes][table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Unidad[/**]\n`;
-            grouped[player].forEach(r => {
-                bb += `[*]${r.launch.toLocaleString()}[|][coord]${r.origin}[/coord][|][coord]${r.target}[/coord][|]${r.unit}\n`;
+        let bb = `[b]📅 PLANIFICACIÓN GENERAL DE FAKES[/b]\n\n`;
+        Object.keys(S.grouped).sort().forEach(player => {
+            bb += `[player]${player}[/player]\n[spoiler=Ver órdenes][table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Unidad[/**]\n`;
+            S.grouped[player].forEach(r => {
+                bb += `[*]${r.launch}[|][coord]${r.origin}[/coord][|][coord]${r.target}[/coord][|]${r.unit}\n`;
             });
             bb += `[/table][/spoiler]\n\n`;
-        }
-        
+        });
         navigator.clipboard.writeText(bb);
-        document.getElementById('copy-msg').innerHTML = "<b class='copy-flash'>¡Copiado todo el BBCode para el foro!</b>";
-        setTimeout(() => document.getElementById('copy-msg').innerHTML = "", 4000);
+        alert("BBCode completo copiado para el foro.");
     }
 
     function buildUnitGrid() {
@@ -272,6 +285,11 @@
         buildUnitGrid();
         document.getElementById('fk-date').value = new Date().toISOString().split('T')[0];
     };
+    
+    function switchTab(t) {
+        document.getElementById('mode-trp').style.display = t==='trp'?'block':'none';
+        document.getElementById('tab-trp').classList.toggle('on', t==='trp');
+    }
 </script>
 </body>
 </html>
