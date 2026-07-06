@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador definitivo de Sarius</title>
+    <title>Sarius War Room - v11.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--green:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
@@ -18,10 +18,11 @@
         textarea, input, select{width:100%;background:#080a0f;border:1px solid var(--brd);border-radius:8px;color:#00ff88;padding:12px;font-family:'Courier New',monospace;font-size:0.8rem;outline:none}
         input, select{color:#fff; font-family:'Inter', sans-serif}
         #village-manager{margin-top:10px; max-height: 450px; overflow-y: auto; border: 1px solid var(--brd); border-radius: 8px; background: #080a0f; padding: 10px}
-        .player-group{border-bottom: 1px solid var(--brd); padding: 10px 0}
-        .player-header-toggle{background: #1e2230; padding: 10px; display: flex; justify-content: space-between; cursor: pointer; align-items: center; border-radius: 6px}
+        .player-group{border: 1px solid var(--brd); border-radius: 8px; margin-bottom: 8px; overflow: hidden}
+        .player-header-toggle{background: #1e2230; padding: 12px; display: flex; justify-content: space-between; cursor: pointer; align-items: center}
+        .player-header-toggle:hover{background: #2d3241}
         .player-name{color:var(--gold); font-weight: 800; font-size: 0.95rem}
-        .v-grid{display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; padding: 10px}
+        .v-grid{display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; padding: 10px; background: #0b0e14}
         .v-grid.open{display: grid}
         .v-card{background: var(--sur); padding: 10px; border-radius: 6px; border: 1px solid var(--brd); display: flex; flex-direction: column; gap: 8px}
         .v-info{font-family: monospace; font-size: 0.75rem; color: #fff}
@@ -30,7 +31,6 @@
         .v-btn.active-off{background: var(--red); color: #fff; border-color: #f00}
         .v-btn.active-noble{background: var(--magenta); color: #fff; border-color: #f0f}
         .v-btn.active-front{background: #444; color: #fff; border-color: #888}
-        .obj-grid{display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px}
         .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase;transition:0.3s}
         .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,106,247,0.4)}
         .res-table{width:100%;border-collapse:collapse;margin-top:20px}
@@ -54,11 +54,11 @@
     <div class="container">
         <!-- 1. CARGA DE DATOS -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (SINCRONIZACIÓN MASIVA)</h2>
+            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (SINCRONIZACIÓN)</h2>
             <div style="display:grid; grid-template-columns: 2.5fr 1fr; gap:20px">
-                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. Puedes pegar varias listas de diferentes jugadores una tras otra."></textarea>
+                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. No importa si pegas varios seguidos [...] [...]"></textarea>
                 <div style="display:flex; flex-direction:column; gap:8px">
-                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR TODO</button>
+                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR ALIANZA</button>
                     <div id="load-status" style="font-size:0.75rem; color:var(--gold); font-weight:bold; text-align:center"></div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
         <!-- 2. OBJETIVOS -->
         <div class="card full">
             <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
-            <div class="obj-grid">
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px">
                 <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Nobles)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
                 <div><label style="color:var(--red)">🔥 REALES (Limpieza OFF)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
                 <div><label style="color:var(--blue)">🎭 FAKES (Engaño)</label><textarea id="obj-fake" rows="6" placeholder="460|460"></textarea></div>
@@ -84,7 +84,7 @@
 
         <!-- 3. CONFIGURACIÓN -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. CONFIGURAR LANZAMIENTO</h2>
+            <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE LANZAMIENTO</h2>
             <div style="display:grid; grid-template-columns: 1fr 1.5fr 1.5fr 1fr; gap:15px; align-items:end">
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
                 <div><label>📅 Fecha Llegada</label><input type="date" id="date-arr"></div>
@@ -101,14 +101,16 @@
             <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLANIFICACIÓN Y LIMPIAR OBJETIVOS</button>
         </div>
 
+        <!-- MENSAJES -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 MENSAJERÍA POR JUGADOR</h2>
             <div class="msg-grid" id="msg-grid"></div>
         </div>
 
+        <!-- TABLA -->
         <div id="sec-res" class="card full" style="display:none">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                <h2>📋 ÓRDENES DE ATAQUE</h2>
+                <h2>📋 TABLA DE ÓRDENES</h2>
                 <button class="btn bs" style="width:auto; margin:0; padding:10px 20px" onclick="copyForo()">📋 COPIAR PARA EL FORO</button>
             </div>
             <div style="overflow-x:auto">
@@ -124,7 +126,7 @@
 </div>
 
 <script>
-    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, marcher:10, heavy:11, ram:30, snob:35 };
+    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
     function loadTribeData() {
@@ -132,7 +134,7 @@
         if(!raw) return alert("Pega los datos.");
         
         try {
-            // MOTOR DE RADAR: Extrae cualquier objeto {"player":"..."} del texto
+            // MOTOR DE RADAR: Busca bloques de pueblos en todo el texto (soporta múltiples pegados)
             const regex = /\{(?:[^{}]|(\{(?:[^{}]|(\{[^{}]*\}))*\}))*\}/g;
             const matches = raw.match(regex);
             if(!matches) throw new Error("No se detectaron datos");
@@ -153,7 +155,7 @@
                 } catch(e) {}
             });
 
-            // Fusión y eliminación de duplicados
+            // Eliminar duplicados reales (misma coordenada)
             db = Array.from(new Map(allParsed.map(item => [item.ck, item])).values());
 
             renderManager();
@@ -229,7 +231,7 @@
         let used = new Set();
         let success = { conq: [], real: [], fake: [] };
 
-        // 1. CONQUISTAS
+        // 1. CONQUISTAS (Prioridad Noble)
         let noblePool = db.filter(v => v.role === 'noble');
         cT.forEach(t => {
             if(!noblePool.length) return;
@@ -240,7 +242,7 @@
             success.conq.push(t.ck);
         });
 
-        // 2. REALES
+        // 2. REALES (Prioridad OFF)
         let offPool = db.filter(v => v.role === 'off' && !used.has(v.ck));
         rT.forEach(t => {
             if(!offPool.length) return;
@@ -251,7 +253,7 @@
             success.real.push(t.ck);
         });
 
-        // 3. FAKES
+        // 3. FAKES (Resto)
         let fakePool = db.filter(v => v.role !== 'front' && !used.has(v.ck));
         if(!fakePool.length) fakePool = db;
         fT.forEach((t, i) => {
@@ -297,10 +299,16 @@
         res.forEach(r => { if(!grouped[r.p]) grouped[r.p] = []; grouped[r.p].push(r); });
 
         for(let p in grouped) {
-            body.innerHTML += `<tr class="player-head"><td colspan="6">👤 JUGADOR: ${p}</td></tr>`;
+            body.innerHTML += `<tr class="player-head"><td colspan="7">👤 JUGADOR: ${p}</td></tr>`;
             grouped[p].forEach(r => {
                 const cls = r.type==='CONQUISTA'?'tag-conq':(r.type==='REAL'?'tag-real':'tag-fake');
-                body.innerHTML += `<tr><td>${r.launch}</td><td>${r.orig}</td><td>→</td><td><b>${r.dest}</b></td><td><span class="pill">${r.visual}</span></td><td><span class="tag ${cls}">${r.type}</span></td><td><button class="v-btn" style="background:var(--acc);color:#fff" onclick="window.open('${r.url}')">🚀</button></td></tr>`;
+                body.innerHTML += `<tr>
+                    <td><b style="color:var(--gold)">${r.launch}</b></td>
+                    <td>${r.orig}</td><td>→</td><td><b>${r.dest}</b></td>
+                    <td><span class="pill">${r.visual}</span></td>
+                    <td><span class="tag ${cls}">${r.type}</span></td>
+                    <td><button class="v-btn" style="background:var(--acc);color:#fff" onclick="window.open('${r.url}')">🚀</button></td>
+                </tr>`;
             });
             grid.innerHTML += `<div class="msg-card"><span><b>${p}</b> (${grouped[p].length})</span><button class="btn bm" onclick="copyMP('${p}')">📩 COPIAR MP</button></div>`;
         }
@@ -320,7 +328,7 @@
     function copyForo() {
         let bb = "[b]📅 PLANIFICACIÓN ESTRATÉGICA[/b]\n\n";
         for(let p in window.currentPlan) {
-            bb += `[player]${p}[/player]\n[spoiler=Ver órdenes][table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[/**]\n`;
+            bb += `[player]${p}[/player]\n[spoiler=Órdenes][table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[/**]\n`;
             window.currentPlan[p].forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord]\n`);
             bb += `[/table][/spoiler]\n\n`;
         }
