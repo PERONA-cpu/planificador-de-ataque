@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador Maestro de Sarius v6</title>
+    <title>Planificador definitivo de Sarius</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--green:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
@@ -32,6 +32,7 @@
         .player-header-toggle{background: #1e2230; padding: 12px; display: flex; justify-content: space-between; cursor: pointer; align-items: center}
         .player-header-toggle:hover{background: #2d3241}
         .player-name{color:var(--gold); font-weight: 800; font-size: 0.95rem}
+        
         .v-grid{display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; padding: 10px; background: #0b0e14}
         .v-grid.open{display: grid}
         .v-card{background: var(--sur); padding: 10px; border-radius: 6px; border: 1px solid var(--brd); display: flex; flex-direction: column; gap: 8px}
@@ -53,8 +54,7 @@
         .res-table td{padding:12px 10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
         .player-head{background:rgba(124,106,247,0.15); color:var(--gold); font-weight:900}
         
-        /* NITIDEZ TROPAS */
-        .pill{background:#000; border:1px solid #333; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:800; margin:1px; display:inline-flex; align-items:center; gap:3px; color: #fff}
+        .pill{background:#000; border:1px solid #333; padding:4px 8px; border-radius:5px; font-size:0.75rem; font-weight:800; margin:1px; display:inline-flex; align-items:center; gap:3px; color: #fff}
         .tag{padding:2px 8px; border-radius:4px; font-size:0.65rem; font-weight:900; color: #fff}
         .tag-real{background:var(--red)}
         .tag-fake{background:var(--blue)}
@@ -69,26 +69,25 @@
 <div class="wrap">
     <div class="header">
         <h1>PLANIFICADOR DEFINITIVO DE SARIUS</h1>
-        <p>CONTROL TÁCTICO DE ALIANZA • v6.0</p>
+        <p>INTELIGENCIA TÁCTICA DE ALIANZA • v7.0</p>
     </div>
 
     <div class="container">
-        <!-- 1. CARGA MASIVA -->
+        <!-- 1. CARGA DE DATOS -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR DATOS DE LA TRIBU (FUSIÓN AUTOMÁTICA)</h2>
-            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px">
-                <textarea id="in-troops" rows="4" placeholder="Pega aquí los JSON. El sistema limpiará pueblos vacíos y fusionará todos los jugadores."></textarea>
+            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (JSON DE TROPAS)</h2>
+            <div style="display:grid; grid-template-columns: 2.5fr 1fr; gap:20px">
+                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. El sistema limpiará pueblos vacíos y fusionará todos los jugadores."></textarea>
                 <div style="display:flex; flex-direction:column; gap:8px">
-                    <button class="btn-main" style="margin:0; padding:10px; background:var(--green)" onclick="loadTribeData()">Sincronizar Todo</button>
+                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">Sincronizar Alianza</button>
                     <div id="load-status" style="font-size:0.75rem; color:var(--gold); font-weight:bold; text-align:center"></div>
                 </div>
             </div>
             
-            <!-- PANEL DE SELECCIÓN DE PUEBLOS -->
             <div id="v-manager-cont">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px">
-                    <label>2. MANDO CENTRAL: BUSCA Y ASIGNA ROLES</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar jugador..." oninput="renderManager()" style="width:250px; padding:6px; background:#000">
+                    <label>2. MANDO CENTRAL: BUSCA JUGADORES Y ASIGNA ROLES</label>
+                    <input type="text" id="p-search" placeholder="🔎 Buscar compañero..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -96,7 +95,7 @@
 
         <!-- 2. OBJETIVOS -->
         <div class="card full">
-            <h2><div class="ico">🎯</div> 3. COORDINACIÓN DE OBJETIVOS</h2>
+            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
             <div class="obj-grid">
                 <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Nobles)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
                 <div><label style="color:var(--red)">🔥 REALES (Limpieza)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
@@ -106,7 +105,7 @@
 
         <!-- 3. CONFIGURACIÓN -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. CONFIGURAR TIEMPOS</h2>
+            <h2><div class="ico">⚙️</div> 4. PARÁMETROS DE ENVÍO</h2>
             <div style="display:grid; grid-template-columns: 1fr 1.5fr 1.5fr 1fr; gap:15px; align-items:end">
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
                 <div><label>📅 Fecha Llegada</label><input type="date" id="date-arr"></div>
@@ -120,9 +119,10 @@
                     </select>
                 </div>
             </div>
-            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLAN Y LIMPIAR LISTAS</button>
+            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLAN Y LIMPIAR OBJETIVOS</button>
         </div>
 
+        <!-- RESULTADOS -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 MENSAJERÍA INDIVIDUAL</h2>
             <div class="msg-grid" id="msg-grid"></div>
@@ -149,20 +149,27 @@
     const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, marcher:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
-    // --- CARGA Y FUSIÓN DE DATOS ---
     function loadTribeData() {
         const raw = document.getElementById('in-troops').value.trim();
         if(!raw) return alert("Pega los datos.");
         
         try {
-            // FUSIÓN DE VARIAS TABLAS: Buscamos todos los objetos {..} sin importar si están en un array o varios
-            const matches = raw.match(/\{"p":.*?\}|\{"player":.*?\}/g);
-            if(!matches) throw new Error("Formato no válido");
-
-            const data = matches.map(m => JSON.parse(m));
+            // LECTOR DE FUERZA BRUTA: Extraemos cada bloque {...} individualmente
+            const regex = /\{"player":.*?\}/g;
+            const matches = raw.match(regex);
             
-            // LIMPIEZA AUTOMÁTICA: Solo pueblos con potencial ofensivo real
-            db = data.filter(v => {
+            if(!matches) {
+                // Intento con formato corto "p"
+                const regexShort = /\{"p":.*?\}/g;
+                const matchesShort = raw.match(regexShort);
+                if(!matchesShort) throw new Error("Formato no válido");
+                var rawData = matchesShort.map(m => JSON.parse(m));
+            } else {
+                var rawData = matches.map(m => JSON.parse(m));
+            }
+
+            // Fusión y filtrado de pueblos ofensivos
+            db = rawData.filter(v => {
                 const off = (v.axe||0) + (v.light||0) + (v.ram||0) + (v.snob||0) + (v.marcher||0);
                 return off > 0;
             }).map(v => ({
@@ -170,19 +177,18 @@
                 x: parseInt(v.x), y: parseInt(v.y),
                 ck: `${v.x}|${v.y}`,
                 vid: v.vid,
-                axe: v.axe || 0, ram: v.ram || 0, snob: v.snob || 0, light: v.light || 0, marcher: v.marcher||0, spy: v.spy||0,
+                axe: v.axe || 0, ram: v.ram || 0, snob: v.snob || 0, light: v.light || 0, marcher: v.marcher||0,
                 role: (v.ram > 150) ? 'off' : (v.snob > 0 ? 'noble' : 'none')
             }));
 
-            // Eliminar duplicados de coordenadas por si se pegó dos veces lo mismo
+            // Eliminar duplicados
             db = Array.from(new Map(db.map(item => [item.ck, item])).values());
 
             renderManager();
             document.getElementById('v-manager-cont').style.display = "block";
-            document.getElementById('load-status').innerText = `✅ LISTA FILTRADA: ${db.length} pueblos de ataque.`;
-            document.getElementById('in-troops').value = ""; // Limpiar para que no estorbe
+            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS.`;
         } catch(e) { 
-            alert("Error al procesar. Asegúrate de copiar las tablas completas."); 
+            alert("Error al procesar las tablas. Asegúrate de copiar los datos completos."); 
         }
     }
 
@@ -210,11 +216,13 @@
             container.appendChild(pDiv);
             
             const grid = pDiv.querySelector('.v-grid');
+            if(search) grid.classList.add('open');
+
             pVills.forEach(v => {
                 let vCard = document.createElement('div');
                 vCard.className = "v-card";
                 vCard.innerHTML = `
-                    <div class="v-info"><b>(${v.x}|${v.y})</b> 🪓${v.axe} 🐴${v.light} 🏹${v.marcher} 🔨${v.ram} 📜${v.snob}</div>
+                    <div class="v-info"><b>(${v.x}|${v.y})</b> 🪓${v.axe} 🐴${v.light} 🔨${v.ram} 📜${v.snob}</div>
                     <div class="v-selector">
                         <div class="v-btn ${v.role==='off'?'active-off':''}" onclick="setRole('${v.ck}','off')">⚔️ OFF</div>
                         <div class="v-btn ${v.role==='noble'?'active-noble':''}" onclick="setRole('${v.ck}','noble')">📜 NOBLE</div>
@@ -242,7 +250,6 @@
         return list;
     }
 
-    // --- GENERADOR ---
     function generatePlan() {
         const cT = parseText('obj-conq');
         const rT = parseText('obj-real');
@@ -251,7 +258,7 @@
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
 
-        if(isNaN(arrMs)) return alert("Fecha/Hora no configurada.");
+        if(isNaN(arrMs)) return alert("Fecha u hora incorrecta.");
 
         let results = [];
         let usedAtks = new Set();
@@ -288,6 +295,7 @@
             success.fake.push(t.ck);
         });
 
+        // LIMPIEZA DE LISTAS
         updateBoxes(success);
         renderFinal(results);
     }
@@ -339,10 +347,11 @@
 
     function copyMP(p) {
         const orders = window.currentPlan[p];
-        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Unidades[/**]\n`;
+        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Tropas[/**]\n`;
         orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.visual}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
+        alert("Copiado.");
     }
 
     function copyForo() {
@@ -353,6 +362,7 @@
             bb += `[/table][/spoiler]\n\n`;
         }
         navigator.clipboard.writeText(bb);
+        alert("Copiado Foro.");
     }
 
     window.onload = () => { document.getElementById('date-arr').value = new Date().toISOString().split('T')[0]; };
