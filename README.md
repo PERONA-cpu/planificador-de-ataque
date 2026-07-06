@@ -3,36 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador definitivo de Sarius</title>
+    <title>Planificador Definitivo de Sarius</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--green:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);padding:20px; line-height: 1.4}
         .wrap{max-width:1400px;margin:0 auto}
-        
         .header{text-align:center;margin-bottom:25px}
         .header h1{font-size:2.2rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:3px;margin:0}
-        .header p{color:var(--txt2);font-size:0.8rem;font-weight:600}
-
-        .container{display:grid;grid-template-columns: 1fr 1fr;gap:20px}
-        .full{grid-column:1/-1}
         .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
-        
         h2{font-size:0.85rem;text-transform:uppercase;color:var(--acc);margin-bottom:15px;display:flex;align-items:center;gap:10px;font-weight:800}
         label{display:block;font-size:0.65rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;font-weight:700}
-        
         textarea, input, select{width:100%;background:#080a0f;border:1px solid var(--brd);border-radius:8px;color:#00ff88;padding:12px;font-family:'Courier New',monospace;font-size:0.8rem;outline:none}
         input, select{color:#fff; font-family:'Inter', sans-serif}
-
-        /* GESTIÓN DE PUEBLOS */
-        #v-manager-cont{display:none; margin-top:20px}
         #village-manager{margin-top:10px; max-height: 450px; overflow-y: auto; border: 1px solid var(--brd); border-radius: 8px; background: #080a0f; padding: 10px}
-        .player-group{border: 1px solid var(--brd); border-radius: 8px; margin-bottom: 8px; overflow: hidden}
-        .player-header-toggle{background: #1e2230; padding: 12px; display: flex; justify-content: space-between; cursor: pointer; align-items: center}
-        .player-header-toggle:hover{background: #2d3241}
-        .player-name{color:var(--gold); font-weight: 800; font-size: 0.95rem}
-        
+        .player-group{border-bottom: 1px solid var(--brd); padding: 15px 0}
+        .player-name{color:var(--gold); font-weight: 900; font-size: 1rem; margin-bottom: 10px; display: block; border-left: 4px solid var(--gold); padding-left: 10px}
         .v-grid{display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; padding: 10px; background: #0b0e14}
         .v-grid.open{display: grid}
         .v-card{background: var(--sur); padding: 10px; border-radius: 6px; border: 1px solid var(--brd); display: flex; flex-direction: column; gap: 8px}
@@ -42,24 +29,18 @@
         .v-btn.active-off{background: var(--red); color: #fff; border-color: #ff0000}
         .v-btn.active-noble{background: var(--magenta); color: #fff; border-color: #ff00ff}
         .v-btn.active-front{background: #444; color: #fff; border-color: #aaa}
-
-        /* OBJETIVOS */
         .obj-grid{display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px}
         .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase;transition:0.3s}
         .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,106,247,0.4)}
-
-        /* RESULTADOS */
         .res-table{width:100%;border-collapse:collapse;margin-top:20px}
         .res-table th{text-align:left;padding:12px;background:#11141d;color:var(--txt2);font-size:0.7rem;text-transform:uppercase}
         .res-table td{padding:12px 10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
         .player-head{background:rgba(124,106,247,0.15); color:var(--gold); font-weight:900}
-        
         .pill{background:#000; border:1px solid #333; padding:4px 8px; border-radius:5px; font-size:0.75rem; font-weight:800; margin:1px; display:inline-flex; align-items:center; gap:3px; color: #fff}
         .tag{padding:2px 8px; border-radius:4px; font-size:0.65rem; font-weight:900; color: #fff}
         .tag-real{background:var(--red)}
         .tag-fake{background:var(--blue)}
         .tag-conq{background:var(--magenta)}
-
         .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; margin-top:20px}
         .msg-card{background:var(--sur2); padding:15px; border-radius:10px; border:1px solid var(--brd); display:flex; justify-content:space-between; align-items:center; border-left:5px solid var(--gold)}
     </style>
@@ -69,25 +50,25 @@
 <div class="wrap">
     <div class="header">
         <h1>PLANIFICADOR DEFINITIVO DE SARIUS</h1>
-        <p>SISTEMA DE MANDO E INTELIGENCIA • v8.0</p>
+        <p>CONTROL TÁCTICO CENTRALIZADO • v9.0</p>
     </div>
 
     <div class="container">
         <!-- 1. CARGA DE DATOS -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA DE TRIBU (PEGA VARIAS TABLAS AQUÍ)</h2>
+            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (FUSIÓN DE TABLAS)</h2>
             <div style="display:grid; grid-template-columns: 2.5fr 1fr; gap:20px">
-                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. Puedes pegar varios seguidos [...] [...]"></textarea>
+                <textarea id="in-troops" rows="5" placeholder="Pega aquí todas las listas que quieras. El sistema las unirá automáticamente..."></textarea>
                 <div style="display:flex; flex-direction:column; gap:8px">
-                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR ALIANZA</button>
+                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR TODO</button>
                     <div id="load-status" style="font-size:0.75rem; color:var(--gold); font-weight:bold; text-align:center"></div>
                 </div>
             </div>
             
-            <div id="v-manager-cont">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px">
+            <div id="v-manager-cont" style="display:none; margin-top:20px">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
                     <label>2. MANDO CENTRAL: GESTIÓN DE ROLES</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar jugador..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2)">
+                    <input type="text" id="p-search" placeholder="🔎 Buscar por nombre..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -97,7 +78,7 @@
         <div class="card full">
             <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
             <div class="obj-grid">
-                <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Ataque Noble)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
+                <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Nobles)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
                 <div><label style="color:var(--red)">🔥 REALES (Limpieza OFF)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
                 <div><label style="color:var(--blue)">🎭 FAKES (Distracción)</label><textarea id="obj-fake" rows="6" placeholder="460|460"></textarea></div>
             </div>
@@ -105,7 +86,7 @@
 
         <!-- 3. CONFIGURACIÓN -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. PARÁMETROS DE COORDINACIÓN</h2>
+            <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE LANZAMIENTO</h2>
             <div style="display:grid; grid-template-columns: 1fr 1.5fr 1.5fr 1fr; gap:15px; align-items:end">
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
                 <div><label>📅 Fecha Llegada</label><input type="date" id="date-arr"></div>
@@ -122,11 +103,13 @@
             <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLANIFICACIÓN Y LIMPIAR OBJETIVOS</button>
         </div>
 
+        <!-- MENSAJES -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 MENSAJERÍA INDIVIDUAL</h2>
             <div class="msg-grid" id="msg-grid"></div>
         </div>
 
+        <!-- TABLA -->
         <div id="sec-res" class="card full" style="display:none">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
                 <h2>📋 ÓRDENES DE ATAQUE</h2>
@@ -145,42 +128,46 @@
 </div>
 
 <script>
-    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
+    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, marcher:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
-    // --- CARGA DE DATOS MULTI-TABLA ---
+    // --- CARGA DE DATOS MULTI-TABLA ROBUSTA ---
     function loadTribeData() {
         const raw = document.getElementById('in-troops').value.trim();
         if(!raw) return alert("Pega los datos.");
         
         try {
-            // Buscamos patrones de objetos {"p":...} o {"player":...}
-            const regex = /\{"(p|player)":.*?\}/g;
+            // Buscador de objetos por fuerza bruta (detecta { ... })
+            const regex = /\{[\s\S]*?\}/g;
             const matches = raw.match(regex);
-            
-            if(!matches) throw new Error("No se detectaron datos válidos");
+            if(!matches) throw new Error("No se detectaron datos");
 
-            const rawData = matches.map(m => JSON.parse(m));
-            
-            // Fusión y limpieza de pueblos inútiles (defensa pura)
-            db = rawData.filter(v => {
-                const off = (v.axe||0) + (v.light||0) + (v.ram||0) + (v.snob||0) + (v.marcher||0);
-                return off > 0;
+            const allParsed = [];
+            matches.forEach(m => {
+                try {
+                    const obj = JSON.parse(m);
+                    if(obj.x && obj.y) allParsed.push(obj);
+                } catch(e) {}
+            });
+
+            // Fusión y limpieza automática: Eliminamos pueblos con 0 tropas ofensivas
+            db = allParsed.filter(v => {
+                const totalOff = (v.axe||0) + (v.light||0) + (v.ram||0) + (v.snob||0) + (v.marcher||0);
+                return totalOff > 0;
             }).map(v => ({
-                player: v.player || v.p,
+                player: v.player || v.p || "Desconocido",
                 x: parseInt(v.x), y: parseInt(v.y),
-                ck: `${v.x}|${v.y}`,
-                vid: v.vid,
+                ck: `${v.x}|${v.y}`, vid: v.vid,
                 axe: v.axe || 0, ram: v.ram || 0, snob: v.snob || 0, light: v.light || 0, marcher: v.marcher||0,
                 role: (v.ram > 150) ? 'off' : (v.snob > 0 ? 'noble' : 'none')
             }));
 
-            // Eliminar duplicados
+            // Eliminar duplicados reales
             db = Array.from(new Map(db.map(item => [item.ck, item])).values());
 
             renderManager();
             document.getElementById('v-manager-cont').style.display = "block";
-            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS OFENSIVOS.`;
+            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS ÚTILES.`;
             document.getElementById('in-troops').value = ""; 
         } catch(e) { 
             alert("Error: Asegúrate de pegar los bloques de código completos."); 
@@ -201,7 +188,7 @@
             pDiv.innerHTML = `
                 <div class="player-header-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
                     <span class="player-name">${pnm}</span>
-                    <span style="font-size:0.7rem; color:var(--acc2)">${pVills.length} pueblos ▾</span>
+                    <span style="font-size:0.7rem; color:var(--acc2)">${pVills.length} pueblos ofensivos ▾</span>
                 </div>
                 <div class="v-grid ${search?'open':''}"></div>
             `;
@@ -230,15 +217,15 @@
     }
 
     function parseText(id) {
+        const txt = document.getElementById(id).value;
         const list = [];
-        document.getElementById(id).value.split('\n').forEach(l => {
+        txt.split('\n').forEach(l => {
             const m = l.match(/(\d{1,3})\|(\d{1,3})/);
             if(m) list.push({x:parseInt(m[1]), y:parseInt(m[2]), ck:m[0]});
         });
         return list;
     }
 
-    // --- GENERADOR ---
     function generatePlan() {
         const cT = parseText('obj-conq');
         const rT = parseText('obj-real');
@@ -247,7 +234,7 @@
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
 
-        if(isNaN(arrMs)) return alert("Pon fecha y hora.");
+        if(isNaN(arrMs)) return alert("Revisa la fecha y hora.");
 
         let results = [];
         let used = new Set();
