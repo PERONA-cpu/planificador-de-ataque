@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador Guerras Tribales PRO - Yonkone</title>
+    <title>Planificador Guerras Tribales ELITE - Yonkone</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0f1117;--sur:#1a1d27;--sur2:#23263a;--brd:#2e3145;--acc:#7c6af7;--acc2:#5b8cf5;--gold:#f5c542;--grn:#4caf7d;--red:#e05252;--txt:#e8eaf6;--txt2:#8b90b0;--r:12px}
@@ -16,7 +16,6 @@
         .ico{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:12px}
         label{display:block;font-size:.7rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;font-weight:700;letter-spacing:0.05em}
         input, textarea, select{width:100%;padding:10px;background:var(--sur2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:inherit;outline:none;font-size:0.85rem}
-        input:focus, textarea:focus{border-color:var(--acc)}
         .btn{padding:10px 16px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:0.85rem}
         .bp{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
         .bs{background:var(--gold);color:#000}
@@ -30,6 +29,7 @@
         table{width:100%;border-collapse:collapse}
         th{text-align:left;padding:10px;background:var(--sur2);color:var(--txt2);font-size:0.7rem;text-transform:uppercase}
         td{padding:10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
+        .used-tag{background:var(--red); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:bold; margin-left:5px}
         .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px; margin-top:10px}
         .msg-card{background:var(--sur2); padding:10px; border-radius:8px; border:1px solid var(--brd); display:flex; justify-content:space-between; align-items:center}
         .check-c{accent-color:var(--gold); width:18px; height:18px; cursor:pointer}
@@ -38,11 +38,11 @@
 <body>
 
 <div class="wrap">
-    <h1>⚔️ Planificador Estratégico PRO</h1>
+    <h1>⚔️ Planificador Estratégico ELITE</h1>
 
     <!-- 1. CONFIGURACIÓN DEL MUNDO -->
     <div class="card">
-        <div class="ct"><div class="ico">🌐</div> Configuración del Mundo</div>
+        <div class="ct"><div class="ico">🌐</div> Configuración</div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:12px; align-items:end">
             <div><label>⚡ Vel. Mundo</label><input type="number" id="v-mundo" value="1.0" step="0.1"></div>
             <div>
@@ -53,37 +53,30 @@
                     <option value="en_tribalwars.net_www">Internacional (.net)</option>
                 </select>
             </div>
-            <div>
-                <label>🌍 Mundo</label>
-                <select id="v-world" onchange="twApplyConfig()" disabled><option value="">Mundos...</option></select>
-            </div>
-            <div>
-                <label>Modo</label>
-                <select id="v-mode"><option value="fakes">🎭 Fakes (Infinitos)</option><option value="real">⚔️ Real (Gastar OFFs)</option></select>
-            </div>
+            <div><label>🌍 Mundo</label><select id="v-world" onchange="twApplyConfig()" disabled><option value="">Mundos...</option></select></div>
+            <div><label>Tipo Ataque</label><select id="v-mode"><option value="real">⚔️ REAL (Bloquea pueblos)</option><option value="fakes">🎭 FAKES (Pueblos infinitos)</option></select></div>
         </div>
-        <div id="v-status" style="font-size:0.7rem; margin-top:5px; color:var(--gold)"></div>
     </div>
 
     <!-- 2. ENTRADA DE DATOS -->
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
         <div class="card">
             <div class="ct"><div class="ico" style="background:var(--red)">🎯</div> Objetivos (Enemigos)</div>
-            <textarea id="in-targets" rows="8" placeholder="CualquierNombre 400|400"></textarea>
+            <textarea id="in-targets" rows="8" placeholder="Enemigo 400|400"></textarea>
         </div>
         <div class="card">
-            <div class="ct"><div class="ico" style="background:var(--grn)">💪</div> Atacantes (Pega el JSON aquí)</div>
-            <textarea id="in-attackers" rows="8" placeholder="Pega el código JSON del script V9 aquí..."></textarea>
+            <div class="ct"><div class="ico" style="background:var(--grn)">💪</div> Atacantes (Pueblos de la Tribu)</div>
+            <textarea id="in-attackers" rows="8" placeholder='Pega el JSON de tropas aquí...'></textarea>
             <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center">
                 <span id="count-used" style="font-size:0.7rem; color:var(--red); font-weight:bold">Pueblos usados: 0</span>
-                <button class="btn bg" style="font-size:0.6rem; padding:4px 8px" onclick="resetUsed()">Resetear Usados</button>
+                <button class="btn bg" style="font-size:0.6rem; padding:4px 8px" onclick="resetUsed()">Resetear Pueblos Usados</button>
             </div>
         </div>
     </div>
 
     <!-- 3. COMPOSICIÓN DE TROPAS -->
     <div class="card">
-        <div class="ct"><div class="ico">🛡️</div> Composición de Tropas a enviar</div>
+        <div class="ct"><div class="ico">🛡️</div> Composición de Tropas por ataque</div>
         <div class="troop-selector">
             <div class="t-in"><span>🗡️</span><input type="number" id="tr-spear" value="0"></div>
             <div class="t-in"><span>⚔️</span><input type="number" id="tr-sword" value="0"></div>
@@ -106,7 +99,7 @@
 
     <!-- 4. CENTRO DE MENSAJERÍA -->
     <div id="card-messages" class="card" style="display:none; border-color:var(--acc2)">
-        <div class="ct" style="color:var(--acc2)"><div class="ico" style="background:var(--acc2)">📩</div> Centro de Mensajería Individual</div>
+        <div class="ct" style="color:var(--acc2)"><div class="ico" style="background:var(--acc2)">📩</div> Centro de Mensajería</div>
         <div style="display:flex; gap:10px; margin-bottom:10px">
             <button class="btn bg" onclick="selMsg(true)">Marcar Todos</button>
             <button class="btn bg" onclick="selMsg(false)">Desmarcar</button>
@@ -117,12 +110,12 @@
 
     <!-- 5. TABLA DE RESULTADOS -->
     <div id="card-results" class="card" style="display:none">
-        <div class="ct"><div class="ico">📋</div> Horarios de Lanzamiento</div>
+        <div class="ct"><div class="ico">📋</div> Resultados</div>
         <button class="btn bs" style="width:100%; margin-bottom:15px" onclick="copyFullForo()">📋 COPIAR TODO PARA EL FORO (Spoilers)</button>
         <div style="overflow-x:auto">
             <table>
                 <thead>
-                    <tr><th>Lanzar el</th><th>Atacante</th><th>Origen</th><th>Hacia</th><th>Objetivo</th><th>🚀</th></tr>
+                    <tr><th>Lanzar el</th><th>Atacante</th><th>Origen</th><th>Hacia</th><th>Objetivo</th><th>Tropas</th><th>🚀</th></tr>
                 </thead>
                 <tbody id="res-body"></tbody>
             </table>
@@ -145,10 +138,8 @@
     async function twLoadWorlds() {
         const srv = document.getElementById('v-server').value;
         const wl = document.getElementById('v-world');
-        const st = document.getElementById('v-status');
         if(!srv) return;
         const [prefix, domain, tws] = srv.split('_');
-        wl.disabled = true; st.innerText = "⏳ Cargando...";
         try {
             const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://' + tws + '.twstats.com/')}`);
             const html = await res.text();
@@ -156,23 +147,17 @@
             const regex = new RegExp(`data-world="${prefix}(\\d+|p\\d+|c\\d+|s\\d+)"`, 'g');
             let m;
             while ((m = regex.exec(html)) !== null) { if(!worlds.includes(m[1])) worlds.push(m[1]); }
-            renderWL(worlds, prefix);
-            st.innerText = "✅ Mundos OK";
+            wl.innerHTML = '<option value="">Elige Mundo...</option>';
+            worlds.sort((a,b)=>b.localeCompare(a, undefined, {numeric:true})).forEach(w=>{
+                let opt = document.createElement('option');
+                opt.value = prefix+w; opt.innerText = (prefix+w).toUpperCase();
+                wl.appendChild(opt);
+            });
+            wl.disabled = false;
         } catch(e) {
-            renderWL(['105','104','103','102','101','100','99'], prefix === 'es' ? 'es' : 'en');
-            st.innerText = "⚠️ Modo emergencia activo";
+            wl.innerHTML = '<option value="es104">ES104</option><option value="es100">ES100</option>';
+            wl.disabled = false;
         }
-    }
-
-    function renderWL(list, prefix) {
-        const wl = document.getElementById('v-world');
-        wl.innerHTML = '<option value="">Elige...</option>';
-        list.sort((a,b)=>b.localeCompare(a, undefined, {numeric:true})).forEach(w=>{
-            let opt = document.createElement('option');
-            opt.value = prefix+w; opt.innerText = (prefix+w).toUpperCase();
-            wl.appendChild(opt);
-        });
-        wl.disabled = false;
     }
 
     async function twApplyConfig() {
@@ -188,81 +173,91 @@
         } catch(e) {}
     }
 
-    // --- PARSER INTELIGENTE (JSON o TEXTO) ---
-    function parseInput(text) {
+    // --- LOGICA CORE ---
+    function parseInput(text, isJSON = false) {
         const data = [];
-        text = text.trim();
-        if (!text) return data;
-
-        // Intentar parsear como JSON (Formato Script V9)
-        try {
-            const json = JSON.parse(text);
-            if (Array.isArray(json)) {
-                json.forEach(v => {
-                    data.push({ p: v.p || v.player || "Manual", x: parseInt(v.x), y: parseInt(v.y), ck: `${v.x}|${v.y}` });
-                });
-                return data;
-            }
-        } catch (e) {}
-
-        // Si no es JSON, parsear como texto manual
-        text.split('\n').forEach(line => {
-            line = line.trim();
-            if(!line) return;
-            const m = line.match(/^(.+?)\s+(\d{1,3})\|(\d{1,3})$/);
-            if(m) data.push({ p: m[1].trim(), x: parseInt(m[2]), y: parseInt(m[3]), ck: `${m[2]}|${m[3]}` });
-            else {
-                const m2 = line.match(/(\d{1,3})\|(\d{1,3})/);
-                if(m2) data.push({ p: 'Manual', x: parseInt(m2[1]), y: parseInt(m2[2]), ck: `${m2[1]}|${m2[2]}` });
-            }
-        });
-        return data;
+        if(isJSON) {
+            try {
+                const json = JSON.parse(text);
+                return json.map(v => ({ 
+                    p: v.player || v.p, 
+                    x: v.x, 
+                    y: v.y, 
+                    ck: `${v.x}|${v.y}`, 
+                    vid: v.vid,
+                    troops: {axe: v.axe, light: v.light, ram: v.ram, snob: v.snob, spear: v.spear, sword: v.sword, spy: v.spy, heavy: v.heavy}
+                }));
+            } catch(e) { alert("Error en JSON de atacantes"); return []; }
+        } else {
+            text.split('\n').forEach(line => {
+                const m = line.match(/(\d{1,3})\|(\d{1,3})/);
+                if(m) data.push({ p: 'Objetivo', x: parseInt(m[1]), y: parseInt(m[2]), ck: `${m[1]}|${m[2]}` });
+            });
+            return data;
+        }
     }
 
     function mainAction() {
         const date = document.getElementById('in-date').value;
         const time = document.getElementById('in-time').value;
-        if(!date || !time) return alert("Selecciona fecha y hora de llegada.");
+        if(!date || !time) return alert("Fecha/Hora faltante");
 
-        const tgts = parseInput(document.getElementById('in-targets').value);
-        const allAtks = parseInput(document.getElementById('in-attackers').value);
+        const tgts = parseInput(document.getElementById('in-targets').value, false);
+        const allAtks = parseInput(document.getElementById('in-attackers').value, true);
         const mode = document.getElementById('v-mode').value;
         
-        // Guardar tropas configuradas
         S.troopConfig = {
             spear: el('tr-spear').value, sword: el('tr-sword').value, axe: el('tr-axe').value,
             spy: el('tr-spy').value, light: el('tr-light').value, heavy: el('tr-heavy').value,
             ram: el('tr-ram').value, catapult: el('tr-catapult').value
         };
 
-        const atks = mode === 'real' ? allAtks.filter(a => !S.used.has(a.ck)) : allAtks;
-        if(!atks.length || !tgts.length) return alert("Faltan atacantes u objetivos.");
+        // Filtrar atacantes si es modo REAL (No usar pueblos ya marcados como usados)
+        const availableAtks = mode === 'real' ? allAtks.filter(a => !S.used.has(a.ck)) : allAtks;
+        
+        if(!availableAtks.length || !tgts.length) return alert("No hay suficientes pueblos disponibles.");
 
         const arrMs = new Date(`${date}T${time}`).getTime();
         const u = UNITS.find(u => u.id === S.uGuia);
         const vM = parseFloat(document.getElementById('v-mundo').value) || 1;
         const wStr = document.getElementById('v-world').value || 'es100';
 
-        // Generar parámetros de tropas para el enlace
-        let trParams = '';
-        for(let key in S.troopConfig) if(S.troopConfig[key] > 0) trParams += `&${key}=${S.troopConfig[key]}`;
-
         S.results = []; S.grouped = {};
-        atks.forEach((a, i) => {
-            const t = tgts[i % tgts.length];
+
+        // Asignación de pueblos (buscando el más cercano a cada objetivo)
+        tgts.forEach((t, i) => {
+            if(availableAtks.length === 0) return;
+            
+            // Buscar el atacante más cercano disponible para este objetivo
+            availableAtks.sort((a, b) => {
+                const d1 = Math.sqrt(Math.pow(a.x - t.x, 2) + Math.pow(a.y - t.y, 2));
+                const d2 = Math.sqrt(Math.pow(b.x - t.x, 2) + Math.pow(b.y - t.y, 2));
+                return d1 - d2;
+            });
+
+            const a = availableAtks.shift(); // Extraer el más cercano
             const dist = Math.sqrt(Math.pow(a.x - t.x, 2) + Math.pow(a.y - t.y, 2));
             const lDate = new Date(arrMs - ((dist * u.spd) / vM) * 60000);
 
+            // Generar URL con tropas
+            let trUrl = '';
+            for(let key in S.troopConfig) {
+                const qty = S.troopConfig[key] == 0 ? (a.troops[key] || 0) : S.troopConfig[key];
+                if(qty > 0) trUrl += `&${key}=${qty}`;
+            }
+
             const res = {
                 l: lDate.toLocaleString(),
-                p: a.p, orig: a.ck, dest: t.ck, destP: t.p,
-                url: `https://${wStr}.guerrastribales.es/game.php?screen=place&target=${t.x}${t.y}${trParams}`
+                p: a.p, orig: a.ck, dest: t.ck,
+                trStr: getTroopBB(a.troops),
+                url: `https://${wStr}.guerrastribales.es/game.php?screen=place&target=${t.x}${t.y}${trUrl}`
             };
 
             S.results.push(res);
             if(!S.grouped[a.p]) S.grouped[a.p] = [];
             S.grouped[a.p].push(res);
-            if(mode === 'real') S.used.add(a.ck);
+            
+            if(mode === 'real') S.used.add(a.ck); // Marcar como usado permanentemente
         });
 
         document.getElementById('count-used').innerText = `Pueblos usados: ${S.used.size}`;
@@ -272,7 +267,7 @@
     function render() {
         let h = '';
         S.results.forEach(r => {
-            h += `<tr><td><b style="color:var(--gold)">${r.l}</b></td><td>${r.p}</td><td>${r.orig}</td><td>→</td><td>${r.dest}</td><td><button class="btn bp" style="padding:4px" onclick="window.open('${r.url}')">🚀</button></td></tr>`;
+            h += `<tr><td><b style="color:var(--gold)">${r.l}</b></td><td>${r.p}</td><td>${r.orig}</td><td>→</td><td>${r.dest}</td><td style="font-size:0.7rem">${r.trStr}</td><td><button class="btn bp" style="padding:4px" onclick="window.open('${r.url}')">🚀</button></td></tr>`;
         });
         document.getElementById('res-body').innerHTML = h;
         document.getElementById('card-results').style.display = 'block';
@@ -285,16 +280,19 @@
         document.getElementById('card-messages').style.display = 'block';
     }
 
-    function getTroopBB() {
+    function getTroopBB(vTroops) {
         let trStr = '';
         const em = {spear:'🗡️',sword:'⚔️',axe:'🪓',spy:'🕵️',light:'🐴',heavy:'🏇',ram:'🔨',catapult:'🪨'};
-        for(let k in S.troopConfig) if(S.troopConfig[k]>0) trStr += `${S.troopConfig[k]}${em[k]} `;
+        for(let k in S.troopConfig) {
+            const qty = S.troopConfig[k] == 0 ? (vTroops[k] || 0) : S.troopConfig[k];
+            if(qty > 0) trStr += `${qty}${em[k]} `;
+        }
         return trStr;
     }
 
     function copyMP(p, btn) {
-        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Tropas[/**]\n`;
-        S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${getTroopBB()}\n`);
+        let bb = `Hola [player]${p}[/player],\n\nTienes órdenes de ataque:\n\n[table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Tropas[/**]\n`;
+        S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.trStr}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
         btn.innerText = "✅"; setTimeout(()=> btn.innerText = "📩", 2000);
@@ -304,8 +302,8 @@
         let bb = '';
         document.querySelectorAll('.check-c:checked').forEach(c => {
             const p = c.getAttribute('data-p');
-            bb += `[player]${p}[/player]\n[spoiler=Órdenes][table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Tropas[/**]\n`;
-            S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${getTroopBB()}\n`);
+            bb += `[player]${p}[/player]\n[spoiler=Tus Órdenes][table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Tropas[/**]\n`;
+            S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.trStr}\n`);
             bb += `[/table][/spoiler]\n\n`;
         });
         navigator.clipboard.writeText(bb);
@@ -316,14 +314,14 @@
         let bb = `[b]📅 PLANIFICACIÓN ESTRATÉGICA[/b]\n\n`;
         Object.keys(S.grouped).sort().forEach(p => {
             bb += `[player]${p}[/player]\n[spoiler=Ver órdenes][table]\n[**]Lanzar[||]Origen[||]Objetivo[||]Tropas[/**]\n`;
-            S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${getTroopBB()}\n`);
+            S.grouped[p].forEach(o => bb += `[*]${o.l}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.trStr}\n`);
             bb += `[/table][/spoiler]\n\n`;
         });
         navigator.clipboard.writeText(bb);
         alert("Copiado para el foro.");
     }
 
-    function resetUsed() { S.used.clear(); document.getElementById('count-used').innerText = "Pueblos usados: 0"; alert("Reseteado."); }
+    function resetUsed() { S.used.clear(); document.getElementById('count-used').innerText = "Pueblos usados: 0"; alert("Lista de OFFs reseteada."); }
     function selMsg(st) { document.querySelectorAll('.check-c').forEach(c => c.checked = st); }
     function el(id){return document.getElementById(id)}
     function buildGrid() {
