@@ -69,25 +69,25 @@
 <div class="wrap">
     <div class="header">
         <h1>PLANIFICADOR DEFINITIVO DE SARIUS</h1>
-        <p>INTELIGENCIA TÁCTICA DE ALIANZA • v7.0</p>
+        <p>SISTEMA DE MANDO E INTELIGENCIA • v8.0</p>
     </div>
 
     <div class="container">
         <!-- 1. CARGA DE DATOS -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (JSON DE TROPAS)</h2>
+            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA DE TRIBU (PEGA VARIAS TABLAS AQUÍ)</h2>
             <div style="display:grid; grid-template-columns: 2.5fr 1fr; gap:20px">
-                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. El sistema limpiará pueblos vacíos y fusionará todos los jugadores."></textarea>
+                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. Puedes pegar varios seguidos [...] [...]"></textarea>
                 <div style="display:flex; flex-direction:column; gap:8px">
-                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">Sincronizar Alianza</button>
+                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR ALIANZA</button>
                     <div id="load-status" style="font-size:0.75rem; color:var(--gold); font-weight:bold; text-align:center"></div>
                 </div>
             </div>
             
             <div id="v-manager-cont">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px">
-                    <label>2. MANDO CENTRAL: BUSCA JUGADORES Y ASIGNA ROLES</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar compañero..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2)">
+                    <label>2. MANDO CENTRAL: GESTIÓN DE ROLES</label>
+                    <input type="text" id="p-search" placeholder="🔎 Buscar jugador..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -97,15 +97,15 @@
         <div class="card full">
             <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
             <div class="obj-grid">
-                <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Nobles)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
-                <div><label style="color:var(--red)">🔥 REALES (Limpieza)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
-                <div><label style="color:var(--blue)">🎭 FAKES (Engaño)</label><textarea id="obj-fake" rows="6" placeholder="460|460"></textarea></div>
+                <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Ataque Noble)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
+                <div><label style="color:var(--red)">🔥 REALES (Limpieza OFF)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
+                <div><label style="color:var(--blue)">🎭 FAKES (Distracción)</label><textarea id="obj-fake" rows="6" placeholder="460|460"></textarea></div>
             </div>
         </div>
 
         <!-- 3. CONFIGURACIÓN -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. PARÁMETROS DE ENVÍO</h2>
+            <h2><div class="ico">⚙️</div> 4. PARÁMETROS DE COORDINACIÓN</h2>
             <div style="display:grid; grid-template-columns: 1fr 1.5fr 1.5fr 1fr; gap:15px; align-items:end">
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
                 <div><label>📅 Fecha Llegada</label><input type="date" id="date-arr"></div>
@@ -119,10 +119,9 @@
                     </select>
                 </div>
             </div>
-            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLAN Y LIMPIAR OBJETIVOS</button>
+            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLANIFICACIÓN Y LIMPIAR OBJETIVOS</button>
         </div>
 
-        <!-- RESULTADOS -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 MENSAJERÍA INDIVIDUAL</h2>
             <div class="msg-grid" id="msg-grid"></div>
@@ -146,29 +145,24 @@
 </div>
 
 <script>
-    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, marcher:10, heavy:11, ram:30, snob:35 };
+    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
+    // --- CARGA DE DATOS MULTI-TABLA ---
     function loadTribeData() {
         const raw = document.getElementById('in-troops').value.trim();
         if(!raw) return alert("Pega los datos.");
         
         try {
-            // LECTOR DE FUERZA BRUTA: Extraemos cada bloque {...} individualmente
-            const regex = /\{"player":.*?\}/g;
+            // Buscamos patrones de objetos {"p":...} o {"player":...}
+            const regex = /\{"(p|player)":.*?\}/g;
             const matches = raw.match(regex);
             
-            if(!matches) {
-                // Intento con formato corto "p"
-                const regexShort = /\{"p":.*?\}/g;
-                const matchesShort = raw.match(regexShort);
-                if(!matchesShort) throw new Error("Formato no válido");
-                var rawData = matchesShort.map(m => JSON.parse(m));
-            } else {
-                var rawData = matches.map(m => JSON.parse(m));
-            }
+            if(!matches) throw new Error("No se detectaron datos válidos");
 
-            // Fusión y filtrado de pueblos ofensivos
+            const rawData = matches.map(m => JSON.parse(m));
+            
+            // Fusión y limpieza de pueblos inútiles (defensa pura)
             db = rawData.filter(v => {
                 const off = (v.axe||0) + (v.light||0) + (v.ram||0) + (v.snob||0) + (v.marcher||0);
                 return off > 0;
@@ -186,9 +180,10 @@
 
             renderManager();
             document.getElementById('v-manager-cont').style.display = "block";
-            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS.`;
+            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS OFENSIVOS.`;
+            document.getElementById('in-troops').value = ""; 
         } catch(e) { 
-            alert("Error al procesar las tablas. Asegúrate de copiar los datos completos."); 
+            alert("Error: Asegúrate de pegar los bloques de código completos."); 
         }
     }
 
@@ -196,28 +191,22 @@
         const container = document.getElementById('village-manager');
         const search = document.getElementById('p-search').value.toLowerCase();
         container.innerHTML = "";
-        
         const players = [...new Set(db.map(x => x.player))].sort();
 
         players.forEach(pnm => {
             if(search && !pnm.toLowerCase().includes(search)) return;
-
             let pDiv = document.createElement('div');
             pDiv.className = "player-group";
             const pVills = db.filter(v => v.player === pnm);
-            
             pDiv.innerHTML = `
                 <div class="player-header-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
                     <span class="player-name">${pnm}</span>
-                    <span style="font-size:0.7rem; color:var(--acc2)">${pVills.length} pueblos ofensivos ▾</span>
+                    <span style="font-size:0.7rem; color:var(--acc2)">${pVills.length} pueblos ▾</span>
                 </div>
-                <div class="v-grid"></div>
+                <div class="v-grid ${search?'open':''}"></div>
             `;
             container.appendChild(pDiv);
-            
             const grid = pDiv.querySelector('.v-grid');
-            if(search) grid.classList.add('open');
-
             pVills.forEach(v => {
                 let vCard = document.createElement('div');
                 vCard.className = "v-card";
@@ -241,15 +230,15 @@
     }
 
     function parseText(id) {
-        const txt = document.getElementById(id).value;
         const list = [];
-        txt.split('\n').forEach(l => {
+        document.getElementById(id).value.split('\n').forEach(l => {
             const m = l.match(/(\d{1,3})\|(\d{1,3})/);
             if(m) list.push({x:parseInt(m[1]), y:parseInt(m[2]), ck:m[0]});
         });
         return list;
     }
 
+    // --- GENERADOR ---
     function generatePlan() {
         const cT = parseText('obj-conq');
         const rT = parseText('obj-real');
@@ -258,10 +247,10 @@
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
 
-        if(isNaN(arrMs)) return alert("Fecha u hora incorrecta.");
+        if(isNaN(arrMs)) return alert("Pon fecha y hora.");
 
         let results = [];
-        let usedAtks = new Set();
+        let used = new Set();
         let success = { conq: [], real: [], fake: [] };
 
         // 1. CONQUISTAS
@@ -270,24 +259,24 @@
             if(!noblePool.length) return;
             noblePool.sort((a,b) => dist(a,t) - dist(b,t));
             const w = noblePool.shift();
-            usedAtks.add(w.ck);
+            used.add(w.ck);
             results.push(createOrder(w, t, 'CONQUISTA', arrMs, vM, 'snob'));
             success.conq.push(t.ck);
         });
 
         // 2. REALES
-        let offPool = db.filter(v => v.role === 'off' && !usedAtks.has(v.ck));
+        let offPool = db.filter(v => v.role === 'off' && !used.has(v.ck));
         rT.forEach(t => {
             if(!offPool.length) return;
             offPool.sort((a,b) => dist(a,t) - dist(b,t));
             const w = offPool.shift();
-            usedAtks.add(w.ck);
+            used.add(w.ck);
             results.push(createOrder(w, t, 'REAL', arrMs, vM, uG));
             success.real.push(t.ck);
         });
 
         // 3. FAKES
-        let fakePool = db.filter(v => v.role !== 'front' && !usedAtks.has(v.ck));
+        let fakePool = db.filter(v => v.role !== 'front' && !used.has(v.ck));
         if(!fakePool.length) fakePool = db;
         fT.forEach((t, i) => {
             const w = fakePool[i % fakePool.length];
@@ -295,7 +284,6 @@
             success.fake.push(t.ck);
         });
 
-        // LIMPIEZA DE LISTAS
         updateBoxes(success);
         renderFinal(results);
     }
@@ -333,7 +321,7 @@
         res.forEach(r => { if(!grouped[r.p]) grouped[r.p] = []; grouped[r.p].push(r); });
 
         for(let p in grouped) {
-            body.innerHTML += `<tr class="player-head"><td colspan="6">👤 JUGADOR: ${p}</td></tr>`;
+            body.innerHTML += `<tr class="player-head"><td colspan="7">👤 JUGADOR: ${p}</td></tr>`;
             grouped[p].forEach(r => {
                 const cls = r.type==='CONQUISTA'?'tag-conq':(r.type==='REAL'?'tag-real':'tag-fake');
                 body.innerHTML += `<tr><td>${r.launch}</td><td>${r.orig}</td><td>→</td><td><b>${r.dest}</b></td><td><span class="pill">${r.visual}</span></td><td><span class="tag ${cls}">${r.type}</span></td><td><button class="v-btn" style="background:var(--acc);color:#fff" onclick="window.open('${r.url}')">🚀</button></td></tr>`;
@@ -347,11 +335,10 @@
 
     function copyMP(p) {
         const orders = window.currentPlan[p];
-        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Tropas[/**]\n`;
+        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Unidades[/**]\n`;
         orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.visual}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
-        alert("Copiado.");
     }
 
     function copyForo() {
@@ -362,7 +349,6 @@
             bb += `[/table][/spoiler]\n\n`;
         }
         navigator.clipboard.writeText(bb);
-        alert("Copiado Foro.");
     }
 
     window.onload = () => { document.getElementById('date-arr').value = new Date().toISOString().split('T')[0]; };
