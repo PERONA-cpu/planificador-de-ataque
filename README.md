@@ -3,45 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarius War Room - v11.0</title>
+    <title>Planificador Maestro Sarius v12</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--green:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
+        :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--grn:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0}
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);padding:20px; line-height: 1.4}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);padding:20px;line-height:1.4}
         .wrap{max-width:1400px;margin:0 auto}
-        .header{text-align:center;margin-bottom:25px;border-bottom:1px solid var(--brd);padding-bottom:20px}
-        .header h1{font-size:2.2rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:3px;margin:0}
-        .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+        .header{text-align:center;margin-bottom:25px;border-bottom:2px solid var(--brd);padding-bottom:15px}
+        .header h1{font-size:2.4rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:4px;margin:0}
+        .container{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .full{grid-column:1/-1}
+        .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
         h2{font-size:0.85rem;text-transform:uppercase;color:var(--acc);margin-bottom:15px;display:flex;align-items:center;gap:10px;font-weight:800}
         label{display:block;font-size:0.65rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;font-weight:700}
         textarea, input, select{width:100%;background:#080a0f;border:1px solid var(--brd);border-radius:8px;color:#00ff88;padding:12px;font-family:'Courier New',monospace;font-size:0.8rem;outline:none}
-        input, select{color:#fff; font-family:'Inter', sans-serif}
-        #village-manager{margin-top:10px; max-height: 450px; overflow-y: auto; border: 1px solid var(--brd); border-radius: 8px; background: #080a0f; padding: 10px}
-        .player-group{border: 1px solid var(--brd); border-radius: 8px; margin-bottom: 8px; overflow: hidden}
-        .player-header-toggle{background: #1e2230; padding: 12px; display: flex; justify-content: space-between; cursor: pointer; align-items: center}
-        .player-header-toggle:hover{background: #2d3241}
-        .player-name{color:var(--gold); font-weight: 800; font-size: 0.95rem}
-        .v-grid{display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; padding: 10px; background: #0b0e14}
-        .v-grid.open{display: grid}
-        .v-card{background: var(--sur); padding: 10px; border-radius: 6px; border: 1px solid var(--brd); display: flex; flex-direction: column; gap: 8px}
-        .v-info{font-family: monospace; font-size: 0.75rem; color: #fff}
-        .v-selector{display: flex; gap: 4px}
-        .v-btn{flex:1; padding: 5px; border-radius: 4px; border: 1px solid var(--brd); background: var(--sur2); color: var(--txt2); font-size: 0.6rem; font-weight: 800; cursor: pointer}
-        .v-btn.active-off{background: var(--red); color: #fff; border-color: #f00}
-        .v-btn.active-noble{background: var(--magenta); color: #fff; border-color: #f0f}
-        .v-btn.active-front{background: #444; color: #fff; border-color: #888}
-        .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase;transition:0.3s}
-        .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,106,247,0.4)}
+        input, select{color:#fff;font-family:inherit}
+        
+        /* GESTOR DE PUEBLOS */
+        #village-manager{margin-top:10px;max-height:400px;overflow-y:auto;border:1px solid var(--brd);border-radius:8px;background:#080a0f;padding:10px}
+        .player-group{border:1px solid var(--brd);border-radius:8px;margin-bottom:10px;overflow:hidden;background:var(--sur)}
+        .player-toggle{padding:12px;background:var(--sur2);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--gold)}
+        .player-toggle:hover{background:var(--brd)}
+        .v-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;padding:10px}
+        .v-grid.open{display:grid}
+        .v-card{background:#0b0e14;padding:10px;border-radius:6px;border:1px solid var(--brd);display:flex;flex-direction:column;gap:8px}
+        .v-selector{display:flex;gap:4px}
+        .v-btn{flex:1;padding:6px;border-radius:4px;border:1px solid var(--brd);background:var(--sur2);color:var(--txt2);font-size:0.6rem;font-weight:900;cursor:pointer;text-align:center;transition:0.2s}
+        .v-btn.active-off{background:var(--red);color:#fff;border-color:#f00}
+        .v-btn.active-noble{background:var(--magenta);color:#fff;border-color:#f0f}
+        .v-btn.active-front{background:#444;color:#fff;border-color:#888}
+
+        /* TABLA RESULTADOS */
+        .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase}
         .res-table{width:100%;border-collapse:collapse;margin-top:20px}
         .res-table th{text-align:left;padding:12px;background:#11141d;color:var(--txt2);font-size:0.7rem;text-transform:uppercase}
-        .res-table td{padding:12px 10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
-        .player-head{background:rgba(124,106,247,0.15); color:var(--gold); font-weight:900}
-        .pill{background:#000; border:1px solid #333; padding:4px 8px; border-radius:5px; font-size:0.75rem; font-weight:800; margin:1px; display:inline-flex; align-items:center; gap:3px; color: #fff}
-        .tag{padding:2px 8px; border-radius:4px; font-size:0.65rem; font-weight:900; color: #fff}
+        .res-table td{padding:12px;border-bottom:1px solid var(--brd);font-size:0.85rem}
+        .player-head{background:rgba(124,106,247,0.2);color:var(--gold);font-weight:900}
+        .pill{background:#000;border:1px solid #333;padding:4px 8px;border-radius:5px;font-size:0.75rem;font-weight:800;margin:1px;display:inline-flex;align-items:center;gap:3px;color:#fff}
+        .tag{padding:2px 8px;border-radius:4px;font-size:0.65rem;font-weight:900;color:#fff}
         .tag-real{background:var(--red)}.tag-fake{background:var(--blue)}.tag-conq{background:var(--magenta)}
-        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; margin-top:20px}
-        .msg-card{background:var(--sur2); padding:15px; border-radius:10px; border:1px solid var(--brd); display:flex; justify-content:space-between; align-items:center; border-left:5px solid var(--gold)}
+
+        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:15px;margin-top:20px}
+        .msg-card{background:var(--sur2);padding:15px;border-radius:10px;border:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;border-left:5px solid var(--gold)}
     </style>
 </head>
 <body>
@@ -52,21 +56,21 @@
     </div>
 
     <div class="container">
-        <!-- 1. CARGA DE DATOS -->
+        <!-- 1. CARGA INTELIGENTE -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA (SINCRONIZACIÓN)</h2>
-            <div style="display:grid; grid-template-columns: 2.5fr 1fr; gap:20px">
-                <textarea id="in-troops" rows="5" placeholder="Pega aquí los JSON. No importa si pegas varios seguidos [...] [...]"></textarea>
-                <div style="display:flex; flex-direction:column; gap:8px">
-                    <button class="btn-main" style="margin:0; padding:12px; background:var(--green)" onclick="loadTribeData()">SINCRONIZAR ALIANZA</button>
-                    <div id="load-status" style="font-size:0.75rem; color:var(--gold); font-weight:bold; text-align:center"></div>
+            <h2><div class="ico">💪</div> 1. CARGAR DATOS DE LA TRIBU (JSON / MULTI-TABLA)</h2>
+            <div style="display:grid;grid-template-columns:3fr 1fr;gap:20px">
+                <textarea id="in-troops" rows="5" placeholder="Pega aquí los datos de tropas. Puedes pegar múltiples listas seguidas..."></textarea>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                    <button class="btn-main" style="margin:0;padding:12px;background:var(--grn)" onclick="loadData()">Sincronizar Inteligencia</button>
+                    <div id="load-status" style="font-size:0.75rem;color:var(--gold);font-weight:bold;text-align:center"></div>
                 </div>
             </div>
-            
-            <div id="v-manager-cont" style="display:none; margin-top:20px">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-                    <label>2. MANDO CENTRAL: ASIGNA ROLES (Haz clic en el nombre para desplegar)</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar compañero..." oninput="renderManager()" style="width:300px; padding:8px; background:#000; border-color:var(--acc2); color:#fff">
+
+            <div id="v-manager-cont" style="display:none;margin-top:20px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <label>2. MANDO CENTRAL: ASIGNAR ROLES</label>
+                    <input type="text" id="p-search" placeholder="🔎 Buscar por nombre..." oninput="renderManager()" style="width:300px;padding:8px;background:#000;border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -74,18 +78,18 @@
 
         <!-- 2. OBJETIVOS -->
         <div class="card full">
-            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px">
+            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS DE OPERACIÓN</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px">
                 <div><label style="color:var(--magenta)">🏰 CONQUISTAS (Nobles)</label><textarea id="obj-conq" rows="6" placeholder="400|400"></textarea></div>
                 <div><label style="color:var(--red)">🔥 REALES (Limpieza OFF)</label><textarea id="obj-real" rows="6" placeholder="450|450"></textarea></div>
                 <div><label style="color:var(--blue)">🎭 FAKES (Engaño)</label><textarea id="obj-fake" rows="6" placeholder="460|460"></textarea></div>
             </div>
         </div>
 
-        <!-- 3. CONFIGURACIÓN -->
+        <!-- 3. CONFIG LANZAMIENTO -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE LANZAMIENTO</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1.5fr 1.5fr 1fr; gap:15px; align-items:end">
+            <h2><div class="ico">⚙️</div> 4. CONFIGURAR LANZAMIENTO</h2>
+            <div style="display:grid;grid-template-columns:1fr 1.5fr 1.5fr 1fr;gap:15px;align-items:end">
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
                 <div><label>📅 Fecha Llegada</label><input type="date" id="date-arr"></div>
                 <div><label>🕒 Hora Llegada</label><input type="time" id="time-arr" value="08:00:00" step="1"></div>
@@ -98,10 +102,10 @@
                     </select>
                 </div>
             </div>
-            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLANIFICACIÓN Y LIMPIAR OBJETIVOS</button>
+            <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLAN Y CONSUMIR OBJETIVOS</button>
         </div>
 
-        <!-- MENSAJES -->
+        <!-- MENSAJERÍA -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 MENSAJERÍA POR JUGADOR</h2>
             <div class="msg-grid" id="msg-grid"></div>
@@ -109,9 +113,9 @@
 
         <!-- TABLA -->
         <div id="sec-res" class="card full" style="display:none">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                <h2>📋 TABLA DE ÓRDENES</h2>
-                <button class="btn bs" style="width:auto; margin:0; padding:10px 20px" onclick="copyForo()">📋 COPIAR PARA EL FORO</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+                <h2>📋 ÓRDENES DE ATAQUE</h2>
+                <button class="btn bs" style="width:auto;margin:0;padding:10px 20px" onclick="copyForo()">📋 COPIAR TODO PARA EL FORO</button>
             </div>
             <div style="overflow-x:auto">
                 <table class="res-table">
@@ -126,43 +130,41 @@
 </div>
 
 <script>
-    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
+    const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, marcher:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
-    function loadTribeData() {
-        const raw = document.getElementById('in-troops').value.trim();
-        if(!raw) return alert("Pega los datos.");
+    // --- MOTOR DE CARGA INDESTRUCTIBLE ---
+    function loadData() {
+        const raw = document.getElementById('in-troops').value;
+        const regex = /\{"player":.*?"snob":\d+\}|\{"p":.*?"snob":\d+\}/g;
+        const matches = raw.match(regex);
         
-        try {
-            // MOTOR DE RADAR: Busca bloques de pueblos en todo el texto (soporta múltiples pegados)
-            const regex = /\{(?:[^{}]|(\{(?:[^{}]|(\{[^{}]*\}))*\}))*\}/g;
-            const matches = raw.match(regex);
-            if(!matches) throw new Error("No se detectaron datos");
+        if(!matches) return alert("No se han detectado datos válidos en el texto pegado.");
 
-            const allParsed = [];
-            matches.forEach(m => {
-                try {
-                    const v = JSON.parse(m);
-                    if(v.x && v.y) {
-                        allParsed.push({
-                            player: v.player || v.p || "Desconocido",
-                            x: parseInt(v.x), y: parseInt(v.y),
-                            ck: `${v.x}|${v.y}`, vid: v.vid,
-                            axe: v.axe || 0, ram: v.ram || 0, snob: v.snob || 0, light: v.light || 0, marcher: v.marcher||0, spy: v.spy||0,
-                            role: (v.ram > 200) ? 'off' : (v.snob > 0 ? 'noble' : 'none')
-                        });
-                    }
-                } catch(e) {}
-            });
+        const tempDb = [];
+        matches.forEach(m => {
+            try {
+                const v = JSON.parse(m);
+                const axe = v.axe || 0, ram = v.ram || 0, light = v.light || 0, snob = v.snob || 0;
+                // Filtro: Solo pueblos con algo de ataque o nobles
+                if(axe > 0 || ram > 0 || light > 0 || snob > 0) {
+                    tempDb.push({
+                        player: v.player || v.p,
+                        x: parseInt(v.x), y: parseInt(v.y),
+                        ck: `${v.x}|${v.y}`, vid: v.vid,
+                        axe, ram, light, snob,
+                        role: (ram > 200) ? 'off' : (snob > 0 ? 'noble' : 'none')
+                    });
+                }
+            } catch(e) {}
+        });
 
-            // Eliminar duplicados reales (misma coordenada)
-            db = Array.from(new Map(allParsed.map(item => [item.ck, item])).values());
-
-            renderManager();
-            document.getElementById('v-manager-cont').style.display = "block";
-            document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS.`;
-            document.getElementById('in-troops').value = ""; 
-        } catch(e) { alert("Error al procesar. Copia el código completo."); }
+        // Eliminar duplicados
+        db = Array.from(new Map(tempDb.map(item => [item.ck, item])).values());
+        
+        renderManager();
+        document.getElementById('v-manager-cont').style.display = "block";
+        document.getElementById('load-status').innerText = `✅ SINCRONIZADOS: ${db.length} PUEBLOS OFENSIVOS.`;
     }
 
     function renderManager() {
@@ -173,13 +175,14 @@
 
         players.forEach(pnm => {
             if(search && !pnm.toLowerCase().includes(search)) return;
+            const pVills = db.filter(v => v.player === pnm);
+            
             let pDiv = document.createElement('div');
             pDiv.className = "player-group";
-            const pVills = db.filter(v => v.player === pnm);
             pDiv.innerHTML = `
-                <div class="player-header-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
-                    <span class="player-name">${pnm}</span>
-                    <span style="font-size:0.7rem; color:var(--acc2)">${pVills.length} pueblos ▾</span>
+                <div class="player-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span>👤 ${pnm}</span>
+                    <span style="font-size:0.7rem">${pVills.length} pueblos ▾</span>
                 </div>
                 <div class="v-grid ${search?'open':''}"></div>
             `;
@@ -189,7 +192,7 @@
                 let vCard = document.createElement('div');
                 vCard.className = "v-card";
                 vCard.innerHTML = `
-                    <div class="v-info"><b>(${v.x}|${v.y})</b> 🪓${v.axe} 🐴${v.light} 🔨${v.ram} 📜${v.snob}</div>
+                    <div class="v-info"><b>(${v.x}|${v.y})</b> <span class="pill">🪓${v.axe} 🔨${v.ram} 📜${v.snob}</span></div>
                     <div class="v-selector">
                         <div class="v-btn ${v.role==='off'?'active-off':''}" onclick="setRole('${v.ck}','off')">⚔️ OFF</div>
                         <div class="v-btn ${v.role==='noble'?'active-noble':''}" onclick="setRole('${v.ck}','noble')">📜 NOBLE</div>
@@ -208,15 +211,15 @@
     }
 
     function parseText(id) {
-        const txt = document.getElementById(id).value;
         const list = [];
-        txt.split('\n').forEach(l => {
+        document.getElementById(id).value.split('\n').forEach(l => {
             const m = l.match(/(\d{1,3})\|(\d{1,3})/);
             if(m) list.push({x:parseInt(m[1]), y:parseInt(m[2]), ck:m[0]});
         });
         return list;
     }
 
+    // --- GENERADOR ---
     function generatePlan() {
         const cT = parseText('obj-conq');
         const rT = parseText('obj-real');
@@ -225,13 +228,13 @@
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
 
-        if(isNaN(arrMs)) return alert("Pon fecha y hora.");
+        if(isNaN(arrMs)) return alert("Pon fecha y hora correcta.");
 
         let results = [];
         let used = new Set();
         let success = { conq: [], real: [], fake: [] };
 
-        // 1. CONQUISTAS (Prioridad Noble)
+        // 1. CONQUISTAS
         let noblePool = db.filter(v => v.role === 'noble');
         cT.forEach(t => {
             if(!noblePool.length) return;
@@ -242,7 +245,7 @@
             success.conq.push(t.ck);
         });
 
-        // 2. REALES (Prioridad OFF)
+        // 2. REALES
         let offPool = db.filter(v => v.role === 'off' && !used.has(v.ck));
         rT.forEach(t => {
             if(!offPool.length) return;
@@ -253,7 +256,7 @@
             success.real.push(t.ck);
         });
 
-        // 3. FAKES (Resto)
+        // 3. FAKES
         let fakePool = db.filter(v => v.role !== 'front' && !used.has(v.ck));
         if(!fakePool.length) fakePool = db;
         fT.forEach((t, i) => {
@@ -283,6 +286,7 @@
         const travelMs = (d * SPEEDS[uG] / vM) * 60000;
         const launch = new Date(arrMs - travelMs);
         let trps = (type === 'REAL') ? `&axe=${v.axe}&light=${v.light}&ram=${v.ram}` : (type==='CONQUISTA'?'&snob=1&axe=2000&light=1000':'&spy=1&ram=1');
+        
         return {
             p: v.player, orig: v.ck, dest: t.ck, type,
             launch: launch.toLocaleString(),
@@ -299,16 +303,10 @@
         res.forEach(r => { if(!grouped[r.p]) grouped[r.p] = []; grouped[r.p].push(r); });
 
         for(let p in grouped) {
-            body.innerHTML += `<tr class="player-head"><td colspan="7">👤 JUGADOR: ${p}</td></tr>`;
+            body.innerHTML += `<tr class="player-head"><td colspan="6">👤 JUGADOR: ${p}</td></tr>`;
             grouped[p].forEach(r => {
                 const cls = r.type==='CONQUISTA'?'tag-conq':(r.type==='REAL'?'tag-real':'tag-fake');
-                body.innerHTML += `<tr>
-                    <td><b style="color:var(--gold)">${r.launch}</b></td>
-                    <td>${r.orig}</td><td>→</td><td><b>${r.dest}</b></td>
-                    <td><span class="pill">${r.visual}</span></td>
-                    <td><span class="tag ${cls}">${r.type}</span></td>
-                    <td><button class="v-btn" style="background:var(--acc);color:#fff" onclick="window.open('${r.url}')">🚀</button></td>
-                </tr>`;
+                body.innerHTML += `<tr><td><b style="color:var(--gold)">${r.launch}</b></td><td>${r.orig}</td><td>→</td><td><b>${r.dest}</b></td><td><span class="pill">${r.visual}</span></td><td><span class="tag ${cls}">${r.type}</span></td><td><button class="v-btn" style="background:var(--acc);color:#fff" onclick="window.open('${r.url}')">🚀</button></td></tr>`;
             });
             grid.innerHTML += `<div class="msg-card"><span><b>${p}</b> (${grouped[p].length})</span><button class="btn bm" onclick="copyMP('${p}')">📩 COPIAR MP</button></div>`;
         }
@@ -323,6 +321,7 @@
         orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.visual}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
+        alert("Mensaje copiado al portapapeles.");
     }
 
     function copyForo() {
@@ -333,6 +332,7 @@
             bb += `[/table][/spoiler]\n\n`;
         }
         navigator.clipboard.writeText(bb);
+        alert("Copiado foro.");
     }
 
     window.onload = () => { document.getElementById('date-arr').value = new Date().toISOString().split('T')[0]; };
