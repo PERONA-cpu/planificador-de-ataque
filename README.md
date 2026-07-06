@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarius War Room - v14.0</title>
+    <title>Planificador Maestro Sarius v15</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--grn:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
@@ -13,16 +13,14 @@
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2.2rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:4px;margin:0}
         
-        .container{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-        .full{grid-column:1/-1}
-        .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.6);position:relative}
-        
-        /* DASHBOARD STATS */
+        /* DASHBOARD DE POTENCIA */
         .stats-bar{display:grid;grid-template-columns:repeat(4, 1fr);gap:15px;margin-bottom:20px}
-        .stat-item{background:var(--sur2);padding:15px;border-radius:10px;border:1px solid var(--brd);text-align:center}
-        .stat-val{display:block;font-size:1.5rem;font-weight:900;color:var(--gold)}
-        .stat-lbl{font-size:0.65rem;text-transform:uppercase;color:var(--txt2);font-weight:700}
+        .stat-item{background:var(--sur2);padding:15px;border-radius:10px;border:2px solid var(--brd);text-align:center;transition:0.3s}
+        .stat-item.active{border-color:var(--gold);box-shadow:0 0 15px rgba(245,197,66,0.1)}
+        .stat-val{display:block;font-size:1.8rem;font-weight:900;color:var(--gold)}
+        .stat-lbl{font-size:0.7rem;text-transform:uppercase;color:var(--txt2);font-weight:800;letter-spacing:1px}
 
+        .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.6);margin-bottom:20px}
         h2{font-size:0.85rem;text-transform:uppercase;color:var(--acc);margin-bottom:15px;display:flex;align-items:center;gap:10px;font-weight:800}
         .ico{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--acc),var(--blue));display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
         
@@ -31,31 +29,31 @@
         input, select{color:#fff;font-family:inherit}
 
         /* GESTOR DE PUEBLOS */
-        #village-manager{margin-top:10px;max-height:400px;overflow-y:auto;border:1px solid var(--brd);border-radius:8px;background:#080a0f;padding:10px}
+        #village-manager{margin-top:10px;max-height:450px;overflow-y:auto;border:1px solid var(--brd);border-radius:8px;background:#080a0f;padding:10px}
         .player-group{border:1px solid var(--brd);border-radius:8px;margin-bottom:10px;overflow:hidden;background:var(--sur)}
-        .player-toggle{padding:12px;background:var(--sur2);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:800}
-        .v-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;padding:10px}
+        .player-toggle{padding:12px;background:var(--sur2);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--gold)}
+        .v-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(320px, 1fr));gap:10px;padding:15px;background:#0b0e14}
         .v-grid.open{display:grid}
-        .v-card{background:#0b0e14;padding:10px;border-radius:6px;border:1px solid var(--brd);display:flex;flex-direction:column;gap:8px}
+        .v-card{background:var(--sur);padding:12px;border-radius:8px;border:1px solid var(--brd);display:flex;flex-direction:column;gap:10px}
+        .v-info{font-family: monospace; font-size: 0.75rem; color: #fff; display: flex; justify-content: space-between}
         .v-selector{display:flex;gap:4px}
-        .v-btn{flex:1;padding:6px;border-radius:4px;border:1px solid var(--brd);background:var(--sur2);color:var(--txt2);font-size:0.6rem;font-weight:900;cursor:pointer;text-align:center}
-        .v-btn.active-off{background:var(--red);color:#fff;border-color:#f00}
+        .v-btn{flex:1;padding:7px;border-radius:4px;border:1px solid var(--brd);background:var(--sur2);color:var(--txt2);font-size:0.65rem;font-weight:900;cursor:pointer;text-align:center;transition:0.1s}
+        .v-btn.active-off{background:var(--red);color:#fff;border-color:#f00;box-shadow:0 0 10px rgba(255,0,0,0.2)}
         .v-btn.active-noble{background:var(--magenta);color:#fff;border-color:#f0f}
         .v-btn.active-front{background:#444;color:#fff;border-color:#888}
 
-        /* BOTONES */
         .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase}
-        .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,106,247,0.4)}
         
+        /* RESULTADOS */
         .res-table{width:100%;border-collapse:collapse;margin-top:20px}
         .res-table th{text-align:left;padding:12px;background:#11141d;color:var(--txt2);font-size:0.7rem;text-transform:uppercase}
         .res-table td{padding:12px 10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
         .player-head{background:rgba(124,106,247,0.2);color:var(--gold);font-weight:900}
-        .pill{background:#000;border:1px solid #333;padding:4px 8px;border-radius:5px;font-size:0.75rem;font-weight:800;margin:1px;display:inline-flex;align-items:center;gap:3px;color:#fff}
-        .tag{padding:2px 8px;border-radius:4px;font-size:0.65rem;font-weight:900;color:#fff}
+        .pill{background:#000;border:1px solid #333;padding:4px 10px;border-radius:5px;font-size:0.8rem;font-weight:800;margin:1px;display:inline-flex;align-items:center;gap:5px;color:#fff}
+        .tag{padding:3px 10px;border-radius:4px;font-size:0.7rem;font-weight:900;color:#fff;text-transform:uppercase}
         .tag-real{background:var(--red)}.tag-fake{background:var(--blue)}.tag-conq{background:var(--magenta)}
 
-        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:15px;margin-top:20px}
+        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:15px;margin-top:20px}
         .msg-card{background:var(--sur2);padding:15px;border-radius:10px;border:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;border-left:5px solid var(--gold)}
     </style>
 </head>
@@ -66,30 +64,35 @@
         <h1>PLANIFICADOR DEFINITIVO DE SARIUS</h1>
     </div>
 
-    <!-- DASHBOARD DE ESTADO -->
+    <!-- 📊 DASHBOARD DE INTELIGENCIA -->
     <div class="stats-bar">
-        <div class="stat-item"><span class="stat-val" id="st-offs">0</span><span class="stat-lbl">OFFs Disponibles</span></div>
-        <div class="stat-item"><span class="stat-val" id="st-nobles" style="color:var(--magenta)">0</span><span class="stat-lbl">Nobles Disponibles</span></div>
-        <div class="stat-item"><span class="stat-val" id="st-tgts" style="color:var(--red)">0</span><span class="stat-lbl">Objetivos Totales</span></div>
-        <div class="stat-item"><span class="stat-val" id="st-fakes" style="color:var(--blue)">0</span><span class="stat-lbl">Pueblos para Fake</span></div>
+        <div class="stat-item"><span class="stat-lbl">⚔️ OFFs Reales</span><span class="stat-val" id="st-offs">0</span></div>
+        <div class="stat-item"><span class="stat-lbl" style="color:var(--magenta)">📜 Nobles Listos</span><span class="stat-val" id="st-nobles" style="color:var(--magenta)">0</span></div>
+        <div class="stat-item"><span class="stat-lbl" style="color:var(--red)">🎯 Objetivos</span><span class="stat-val" id="st-tgts" style="color:var(--red)">0</span></div>
+        <div class="stat-item"><span class="stat-lbl" style="color:var(--blue)">🎭 Fakes Disponibles</span><span class="stat-val" id="st-fakes" style="color:var(--blue)">0</span></div>
     </div>
 
     <div class="container">
         <!-- 1. CARGA -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. CARGAR INTELIGENCIA DE TRIBU</h2>
-            <div style="display:grid;grid-template-columns:3fr 1fr;gap:20px">
-                <textarea id="in-troops" rows="4" placeholder="Pega aquí los JSON de la tribu..."></textarea>
+            <h2><div class="ico">💪</div> 1. SINCRONIZAR TROPAS DE LA ALIANZA</h2>
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+                <textarea id="in-troops" rows="4" placeholder="Pega aquí los JSON del extractor..."></textarea>
                 <div style="display:flex;flex-direction:column;gap:10px">
                     <button class="btn-main" style="margin:0;padding:12px;background:var(--grn)" onclick="loadData()">SINCRONIZAR</button>
-                    <div style="text-transform:uppercase; font-size:0.6rem; color:var(--txt2); text-align:center">Mínimos para OFF:<br> <span id="min-axe-val">4000</span>🪓 / <span id="min-ram-val">250</span>🔨</div>
+                    <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px">
+                        <label>Auto-detectar OFF si:</label>
+                        <div style="display:flex; gap:5px; align-items:center">
+                            <span style="font-size:0.7rem">🪓 ></span><input type="number" id="cfg-min-axe" value="4000" style="padding:4px; font-size:0.7rem">
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div id="v-manager-cont" style="display:none;margin-top:20px">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                    <label>2. MANDO CENTRAL: GESTIÓN DE ROLES</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar por nombre..." oninput="renderManager()" style="width:300px;padding:8px;background:#000;border-color:var(--acc2)">
+                    <label>2. MANDO CENTRAL: ASIGNACIÓN MANUAL DE ROLES</label>
+                    <input type="text" id="p-search" placeholder="🔎 Buscar jugador..." oninput="renderManager()" style="width:300px;padding:8px;background:#000;border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -97,21 +100,21 @@
 
         <!-- 2. OBJETIVOS -->
         <div class="card full">
-            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS</h2>
+            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS DE GUERRA</h2>
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px">
                 <div><label style="color:var(--magenta)">🏰 CONQUISTAS</label><textarea id="obj-conq" rows="6" oninput="updateStats()" placeholder="400|400"></textarea></div>
-                <div><label style="color:var(--red)">🔥 REALES (Limpieza)</label><textarea id="obj-real" rows="6" oninput="updateStats()" placeholder="450|450"></textarea></div>
-                <div><label style="color:var(--blue)">🎭 FAKES (Engaño)</label><textarea id="obj-fake" rows="6" oninput="updateStats()" placeholder="460|460"></textarea></div>
+                <div><label style="color:var(--red)">🔥 REALES (LIMPIEZA)</label><textarea id="obj-real" rows="6" oninput="updateStats()" placeholder="450|450"></textarea></div>
+                <div><label style="color:var(--blue)">🎭 FAKES</label><textarea id="obj-fake" rows="6" oninput="updateStats()" placeholder="460|460"></textarea></div>
             </div>
         </div>
 
-        <!-- 3. CONFIG AVANZADA -->
+        <!-- 3. CONFIGURACIÓN -->
         <div class="card full">
-            <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE ATAQUE Y LÍMITES</h2>
+            <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE ATAQUE</h2>
             <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:15px">
-                <div><label>⚔️ Reales por Pueblo</label><input type="number" id="cfg-real-per-v" value="1" min="1"></div>
+                <div><label>⚔️ OFFs por Pueblo</label><input type="number" id="cfg-real-per-v" value="1" min="1"></div>
                 <div><label>🎭 Fakes por Pueblo</label><input type="number" id="cfg-fake-per-v" value="10" min="1"></div>
-                <div><label>🎯 Ataques por Enemigo</label><input type="number" id="cfg-atk-per-target" value="1" min="1" title="Cuántos ataques en total recibe cada coordenada enemiga"></div>
+                <div><label>🎯 Ataques por Enemigo</label><input type="number" id="cfg-atk-per-target" value="1" min="1"></div>
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; align-items:end">
@@ -132,19 +135,19 @@
 
         <!-- RESULTADOS -->
         <div id="sec-msg" class="card full" style="display:none">
-            <h2>📩 MENSAJERÍA POR JUGADOR</h2>
+            <h2>📩 CENTRO DE MENSAJERÍA INDIVIDUAL</h2>
             <div class="msg-grid" id="msg-grid"></div>
         </div>
 
         <div id="sec-res" class="card full" style="display:none">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                <h2>📋 ÓRDENES DE ATAQUE</h2>
-                <button class="btn bs" style="width:auto; margin:0; padding:10px 20px" onclick="copyFullForo()">📋 COPIAR TODO PARA EL FORO</button>
+                <h2>📋 ÓRDENES DE LANZAMIENTO</h2>
+                <button class="btn bp" style="background:var(--gold); color:#000" onclick="copyFullForo()">📋 COPIAR PARA EL FORO</button>
             </div>
             <div style="overflow-x:auto">
                 <table class="res-table">
                     <thead>
-                        <tr><th>Lanzamiento</th><th>Origen</th><th>Destino</th><th>Unidades</th><th>Tipo</th><th>🚀</th></tr>
+                        <tr><th>Lanzamiento</th><th>Origen</th><th>Destino</th><th>Tropas</th><th>Tipo</th><th>🚀</th></tr>
                     </thead>
                     <tbody id="res-body"></tbody>
                 </table>
@@ -157,24 +160,28 @@
     const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
-    // --- MOTOR DE CARGA ---
+    // --- CARGA DE DATOS ---
     function loadData() {
         const raw = document.getElementById('in-troops').value;
         const regex = /\{[\s\S]*?\}/g;
         const matches = raw.match(regex);
-        if(!matches) return alert("Paso 1: Pega el código del script extractor.");
+        if(!matches) return alert("Pega el JSON de tropas.");
 
+        const minAxeDetect = parseInt(document.getElementById('cfg-min-axe').value) || 4000;
         const tempDb = [];
+        
         matches.forEach(m => {
             try {
                 const v = JSON.parse(m);
                 if(v.x !== undefined && v.y !== undefined) {
+                    const axe = v.axe || 0, ram = v.ram || 0, snob = v.snob || 0;
                     tempDb.push({
                         player: v.player || v.p || "Desconocido",
                         x: parseInt(v.x), y: parseInt(v.y),
                         ck: `${v.x}|${v.y}`, vid: v.vid || 0,
-                        axe: v.axe || 0, ram: v.ram || 0, snob: v.snob || 0, light: v.light || 0,
-                        role: (v.ram >= 250 && v.axe >= 4000) ? 'off' : (v.snob > 0 ? 'noble' : 'none')
+                        axe, ram, light: v.light || 0, snob,
+                        // Detección automática de rol
+                        role: (axe >= minAxeDetect) ? 'off' : (snob > 0 ? 'noble' : 'none')
                     });
                 }
             } catch(e) {}
@@ -196,10 +203,11 @@
         players.forEach(pnm => {
             if(search && !pnm.toLowerCase().includes(search)) return;
             const pVills = db.filter(v => v.player === pnm);
+            
             let pDiv = document.createElement('div');
             pDiv.className = "player-group";
             pDiv.innerHTML = `
-                <div class="player-toggle" style="color:var(--gold)" onclick="this.nextElementSibling.classList.toggle('open')">
+                <div class="player-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
                     <span>👤 ${pnm}</span>
                     <span style="font-size:0.7rem">${pVills.length} pueblos ▾</span>
                 </div>
@@ -211,9 +219,12 @@
                 let vCard = document.createElement('div');
                 vCard.className = "v-card";
                 vCard.innerHTML = `
-                    <div class="v-info"><b>(${v.x}|${v.y})</b> <span class="pill">🪓${v.axe} 🔨${v.ram} 📜${v.snob}</span></div>
+                    <div class="v-info">
+                        <span><b>(${v.x}|${v.y})</b></span>
+                        <span style="color:var(--grn)">🪓${v.axe} 🔨${v.ram} 📜${v.snob}</span>
+                    </div>
                     <div class="v-selector">
-                        <div class="v-btn ${v.role==='off'?'active-off':''}" onclick="setRole('${v.ck}','off')">⚔️ OFF</div>
+                        <div class="v-btn ${v.role==='off'?'active-off':''}" onclick="setRole('${v.ck}','off')">⚔️ REAL</div>
                         <div class="v-btn ${v.role==='noble'?'active-noble':''}" onclick="setRole('${v.ck}','noble')">📜 NOBLE</div>
                         <div class="v-btn ${v.role==='front'?'active-front':''}" onclick="setRole('${v.ck}','front')">🛡️ FRONT</div>
                     </div>
@@ -234,15 +245,12 @@
         const offs = db.filter(v => v.role === 'off').length;
         const nobles = db.filter(v => v.role === 'noble').length;
         const fakes = db.filter(v => v.role !== 'front').length;
-        
-        const cT = parseText('obj-conq').length;
-        const rT = parseText('obj-real').length;
-        const fT = parseText('obj-fake').length;
+        const targets = parseText('obj-conq').length + parseText('obj-real').length + parseText('obj-fake').length;
 
         document.getElementById('st-offs').innerText = offs;
         document.getElementById('st-nobles').innerText = nobles;
         document.getElementById('st-fakes').innerText = fakes;
-        document.getElementById('st-tgts').innerText = cT + rT + fT;
+        document.getElementById('st-tgts').innerText = targets;
     }
 
     function parseText(id) {
@@ -264,53 +272,41 @@
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
 
-        const maxRealPerV = parseInt(document.getElementById('cfg-real-per-v').value) || 1;
-        const maxFakePerV = parseInt(document.getElementById('cfg-fake-per-v').value) || 10;
-        const maxPerTarget = parseInt(document.getElementById('cfg-atk-per-target').value) || 1;
-
-        if(isNaN(arrMs)) return alert("Revisa la fecha y la hora.");
+        if(isNaN(arrMs)) return alert("Pon fecha y hora correcta.");
 
         let results = [];
-        let usedCount = new Map(); // ck -> count
-        let targetHits = new Map(); // ck -> count
+        let usedCount = new Map(); 
         let success = { conq: [], real: [], fake: [] };
 
-        // 1. CONQUISTAS
+        // 1. CONQUISTAS (Pueblos marcados como Noble)
         let noblePool = db.filter(v => v.role === 'noble');
         cT.forEach(t => {
             if(!noblePool.length) return;
             noblePool.sort((a,b) => dist(a,t) - dist(b,t));
-            const w = noblePool.find(v => (usedCount.get(v.ck)||0) < maxRealPerV);
-            if(w) {
-                usedCount.set(w.ck, (usedCount.get(w.ck)||0) + 1);
-                results.push(createOrder(w, t, 'CONQUISTA', arrMs, vM, 'snob'));
-                success.conq.push(t.ck);
-            }
+            const w = noblePool.shift();
+            results.push(createOrder(w, t, 'CONQUISTA', arrMs, vM, 'snob'));
+            success.conq.push(t.ck);
         });
 
-        // 2. REALES
+        // 2. REALES (Pueblos marcados como Real)
         let offPool = db.filter(v => v.role === 'off');
         rT.forEach(t => {
             if(!offPool.length) return;
             offPool.sort((a,b) => dist(a,t) - dist(b,t));
-            const w = offPool.find(v => (usedCount.get(v.ck)||0) < maxRealPerV);
-            if(w) {
-                usedCount.set(w.ck, (usedCount.get(w.ck)||0) + 1);
-                results.push(createOrder(w, t, 'REAL', arrMs, vM, uG));
-                success.real.push(t.ck);
-            }
+            const w = offPool.shift();
+            results.push(createOrder(w, t, 'REAL', arrMs, vM, uG));
+            success.real.push(t.ck);
         });
 
-        // 3. FAKES
+        // 3. FAKES (Pueblos que no son Front)
         let fakePool = db.filter(v => v.role !== 'front');
-        fT.forEach(t => {
-            for(let i=0; i<maxPerTarget; i++) {
-                const w = fakePool.find(v => (usedCount.get(v.ck)||0) < maxFakePerV);
-                if(w) {
-                    usedCount.set(w.ck, (usedCount.get(w.ck)||0) + 1);
-                    results.push(createOrder(w, t, 'FAKE', arrMs, vM, uG));
-                    if(!success.fake.includes(t.ck)) success.fake.push(t.ck);
-                }
+        const maxFakesPerV = parseInt(document.getElementById('cfg-fake-per-v').value) || 5;
+        fT.forEach((t, i) => {
+            const w = fakePool.find(v => (usedCount.get(v.ck)||0) < maxFakesPerV);
+            if(w) {
+                usedCount.set(w.ck, (usedCount.get(w.ck)||0) + 1);
+                results.push(createOrder(w, t, 'FAKE', arrMs, vM, uG));
+                success.fake.push(t.ck);
             }
         });
 
@@ -365,7 +361,7 @@
 
     function copyMP(p) {
         const orders = window.currentPlan[p];
-        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Unidades[/**]\n`;
+        let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Tropas[/**]\n`;
         orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.visual}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
@@ -375,7 +371,7 @@
     function copyFullForo() {
         let bb = "[b]📅 PLANIFICACIÓN ESTRATÉGICA[/b]\n\n";
         for(let p in window.currentPlan) {
-            bb += `[player]${p}[/player]\n[spoiler=Órdenes][table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[/**]\n`;
+            bb += `[player]${p}[/player]\n[spoiler=Ver órdenes][table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[/**]\n`;
             window.currentPlan[p].forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord]\n`);
             bb += `[/table][/spoiler]\n\n`;
         }
