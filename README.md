@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador Maestro Sarius v15</title>
+    <title>Planificador Maestro Sarius v16</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--grn:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0;--r:12px}
+        :root{--bg:#0b0e14;--sur:#161923;--sur2:#1e2230;--brd:#2d3241;--acc:#7c6af7;--gold:#f5c542;--red:#ff4d4d;--blue:#4d94ff;--magenta:#ff00ff;--grn:#4caf7d;--txt:#e8eaf6;--txt2:#a0a6c0}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);padding:20px;line-height:1.4}
         .wrap{max-width:1400px;margin:0 auto}
         .header{text-align:center;margin-bottom:20px}
         .header h1{font-size:2.2rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:4px;margin:0}
         
-        /* DASHBOARD DE POTENCIA */
         .stats-bar{display:grid;grid-template-columns:repeat(4, 1fr);gap:15px;margin-bottom:20px}
-        .stat-item{background:var(--sur2);padding:15px;border-radius:10px;border:2px solid var(--brd);text-align:center;transition:0.3s}
-        .stat-item.active{border-color:var(--gold);box-shadow:0 0 15px rgba(245,197,66,0.1)}
+        .stat-item{background:var(--sur2);padding:15px;border-radius:10px;border:1px solid var(--brd);text-align:center}
         .stat-val{display:block;font-size:1.8rem;font-weight:900;color:var(--gold)}
-        .stat-lbl{font-size:0.7rem;text-transform:uppercase;color:var(--txt2);font-weight:800;letter-spacing:1px}
+        .stat-lbl{font-size:0.7rem;text-transform:uppercase;color:var(--txt2);font-weight:800}
 
         .card{background:var(--sur);border:1px solid var(--brd);border-radius:12px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.6);margin-bottom:20px}
         h2{font-size:0.85rem;text-transform:uppercase;color:var(--acc);margin-bottom:15px;display:flex;align-items:center;gap:10px;font-weight:800}
         .ico{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--acc),var(--blue));display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
         
-        label{display:block;font-size:0.65rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;font-weight:700}
-        textarea, input, select{width:100%;background:#080a0f;border:1px solid var(--brd);border-radius:8px;color:#00ff88;padding:12px;font-family:'Courier New',monospace;font-size:0.8rem;outline:none}
+        textarea, input, select{width:100%;background:#080a0f;border:1px solid var(--brd);border-radius:8px;color:#00ff88;padding:12px;font-family:'Courier New',monospace;font-size:0.85rem;outline:none}
         input, select{color:#fff;font-family:inherit}
 
         /* GESTOR DE PUEBLOS */
@@ -37,14 +34,13 @@
         .v-card{background:var(--sur);padding:12px;border-radius:8px;border:1px solid var(--brd);display:flex;flex-direction:column;gap:10px}
         .v-info{font-family: monospace; font-size: 0.75rem; color: #fff; display: flex; justify-content: space-between}
         .v-selector{display:flex;gap:4px}
-        .v-btn{flex:1;padding:7px;border-radius:4px;border:1px solid var(--brd);background:var(--sur2);color:var(--txt2);font-size:0.65rem;font-weight:900;cursor:pointer;text-align:center;transition:0.1s}
-        .v-btn.active-off{background:var(--red);color:#fff;border-color:#f00;box-shadow:0 0 10px rgba(255,0,0,0.2)}
+        .v-btn{flex:1;padding:7px;border-radius:4px;border:1px solid var(--brd);background:var(--sur2);color:var(--txt2);font-size:0.65rem;font-weight:900;cursor:pointer;text-align:center}
+        .v-btn.active-off{background:var(--red);color:#fff;border-color:#f00}
         .v-btn.active-noble{background:var(--magenta);color:#fff;border-color:#f0f}
         .v-btn.active-front{background:#444;color:#fff;border-color:#888}
 
         .btn-main{width:100%;padding:18px;background:linear-gradient(135deg,var(--acc),var(--blue));border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;font-size:1.1rem;margin-top:15px;text-transform:uppercase}
         
-        /* RESULTADOS */
         .res-table{width:100%;border-collapse:collapse;margin-top:20px}
         .res-table th{text-align:left;padding:12px;background:#11141d;color:var(--txt2);font-size:0.7rem;text-transform:uppercase}
         .res-table td{padding:12px 10px;border-bottom:1px solid var(--brd);font-size:0.85rem}
@@ -53,7 +49,7 @@
         .tag{padding:3px 10px;border-radius:4px;font-size:0.7rem;font-weight:900;color:#fff;text-transform:uppercase}
         .tag-real{background:var(--red)}.tag-fake{background:var(--blue)}.tag-conq{background:var(--magenta)}
 
-        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:15px;margin-top:20px}
+        .msg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:15px;margin-top:20px}
         .msg-card{background:var(--sur2);padding:15px;border-radius:10px;border:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;border-left:5px solid var(--gold)}
     </style>
 </head>
@@ -64,35 +60,33 @@
         <h1>PLANIFICADOR DEFINITIVO DE SARIUS</h1>
     </div>
 
-    <!-- 📊 DASHBOARD DE INTELIGENCIA -->
+    <!-- 📊 DASHBOARD -->
     <div class="stats-bar">
-        <div class="stat-item"><span class="stat-lbl">⚔️ OFFs Reales</span><span class="stat-val" id="st-offs">0</span></div>
+        <div class="stat-item"><span class="stat-lbl">⚔️ OFFs Disponibles</span><span class="stat-val" id="st-offs">0</span></div>
         <div class="stat-item"><span class="stat-lbl" style="color:var(--magenta)">📜 Nobles Listos</span><span class="stat-val" id="st-nobles" style="color:var(--magenta)">0</span></div>
-        <div class="stat-item"><span class="stat-lbl" style="color:var(--red)">🎯 Objetivos</span><span class="stat-val" id="st-tgts" style="color:var(--red)">0</span></div>
-        <div class="stat-item"><span class="stat-lbl" style="color:var(--blue)">🎭 Fakes Disponibles</span><span class="stat-val" id="st-fakes" style="color:var(--blue)">0</span></div>
+        <div class="stat-item"><span class="stat-lbl" style="color:var(--red)">🎯 Objetivos</span><span class="stat-val" id="st-tgts">0</span></div>
+        <div class="stat-item"><span class="stat-lbl" style="color:var(--blue)">🎭 Pueblos para Fake</span><span class="stat-val" id="st-fakes">0</span></div>
     </div>
 
     <div class="container">
         <!-- 1. CARGA -->
         <div class="card full">
-            <h2><div class="ico">💪</div> 1. SINCRONIZAR TROPAS DE LA ALIANZA</h2>
+            <h2><div class="ico">💪</div> 1. SINCRONIZAR ALIANZA (Rastreador Inteligente)</h2>
             <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
-                <textarea id="in-troops" rows="4" placeholder="Pega aquí los JSON del extractor..."></textarea>
+                <textarea id="in-troops" rows="4" placeholder="Pega aquí los JSON de la tribu..."></textarea>
                 <div style="display:flex;flex-direction:column;gap:10px">
                     <button class="btn-main" style="margin:0;padding:12px;background:var(--grn)" onclick="loadData()">SINCRONIZAR</button>
                     <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px">
-                        <label>Auto-detectar OFF si:</label>
-                        <div style="display:flex; gap:5px; align-items:center">
-                            <span style="font-size:0.7rem">🪓 ></span><input type="number" id="cfg-min-axe" value="4000" style="padding:4px; font-size:0.7rem">
-                        </div>
+                        <label>Auto-detectar OFF si hachas > </label>
+                        <input type="number" id="cfg-min-axe" value="3000" style="padding:4px; font-size:0.7rem">
                     </div>
                 </div>
             </div>
 
             <div id="v-manager-cont" style="display:none;margin-top:20px">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                    <label>2. MANDO CENTRAL: ASIGNACIÓN MANUAL DE ROLES</label>
-                    <input type="text" id="p-search" placeholder="🔎 Buscar jugador..." oninput="renderManager()" style="width:300px;padding:8px;background:#000;border-color:var(--acc2)">
+                    <label>2. MANDO CENTRAL: GESTIÓN DE ROLES</label>
+                    <input type="text" id="p-search" placeholder="🔎 Buscar compañero..." oninput="renderManager()" style="width:300px;padding:8px;background:#000;border-color:var(--acc2)">
                 </div>
                 <div id="village-manager"></div>
             </div>
@@ -100,7 +94,7 @@
 
         <!-- 2. OBJETIVOS -->
         <div class="card full">
-            <h2><div class="ico">🎯</div> 3. DEFINIR OBJETIVOS DE GUERRA</h2>
+            <h2><div class="ico">🎯</div> 3. COORDINACIÓN DE OBJETIVOS</h2>
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px">
                 <div><label style="color:var(--magenta)">🏰 CONQUISTAS</label><textarea id="obj-conq" rows="6" oninput="updateStats()" placeholder="400|400"></textarea></div>
                 <div><label style="color:var(--red)">🔥 REALES (LIMPIEZA)</label><textarea id="obj-real" rows="6" oninput="updateStats()" placeholder="450|450"></textarea></div>
@@ -113,7 +107,7 @@
             <h2><div class="ico">⚙️</div> 4. CONFIGURACIÓN DE ATAQUE</h2>
             <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:15px">
                 <div><label>⚔️ OFFs por Pueblo</label><input type="number" id="cfg-real-per-v" value="1" min="1"></div>
-                <div><label>🎭 Fakes por Pueblo</label><input type="number" id="cfg-fake-per-v" value="10" min="1"></div>
+                <div><label>🎭 Fakes por Pueblo</label><input type="number" id="cfg-fake-per-v" value="5" min="1"></div>
                 <div><label>🎯 Ataques por Enemigo</label><input type="number" id="cfg-atk-per-target" value="1" min="1"></div>
                 <div><label>⚡ Vel. Mundo</label><input type="number" id="w-speed" value="1.0" step="0.1"></div>
             </div>
@@ -126,14 +120,12 @@
                         <option value="ram">Ariete (30m)</option>
                         <option value="snob">Noble (35m)</option>
                         <option value="axe">Hacha (18m)</option>
-                        <option value="spy">Espía (9m)</option>
                     </select>
                 </div>
             </div>
             <button class="btn-main" onclick="generatePlan()">🚀 GENERAR PLANIFICACIÓN Y CONSUMIR OBJETIVOS</button>
         </div>
 
-        <!-- RESULTADOS -->
         <div id="sec-msg" class="card full" style="display:none">
             <h2>📩 CENTRO DE MENSAJERÍA INDIVIDUAL</h2>
             <div class="msg-grid" id="msg-grid"></div>
@@ -141,7 +133,7 @@
 
         <div id="sec-res" class="card full" style="display:none">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                <h2>📋 ÓRDENES DE LANZAMIENTO</h2>
+                <h2>📋 ÓRDENES DE ATAQUE</h2>
                 <button class="btn bp" style="background:var(--gold); color:#000" onclick="copyFullForo()">📋 COPIAR PARA EL FORO</button>
             </div>
             <div style="overflow-x:auto">
@@ -160,34 +152,36 @@
     const SPEEDS = { spear:18, sword:22, axe:18, spy:9, light:10, heavy:11, ram:30, snob:35 };
     let db = [];
 
-    // --- CARGA DE DATOS ---
+    // --- MOTOR DE ESCANEO ROBUSTO (RADAR) ---
     function loadData() {
         const raw = document.getElementById('in-troops').value;
-        const regex = /\{[\s\S]*?\}/g;
+        // Escaneamos el texto buscando objetos pueblo por pueblo
+        const regex = /\{"player":.*?"snob":\d+\}|\{"p":.*?"snob":\d+\}/g;
         const matches = raw.match(regex);
-        if(!matches) return alert("Pega el JSON de tropas.");
+        
+        if(!matches) return alert("Paso 1: No se han detectado datos válidos.");
 
-        const minAxeDetect = parseInt(document.getElementById('cfg-min-axe').value) || 4000;
+        const minAxeDetect = parseInt(document.getElementById('cfg-min-axe').value) || 3000;
         const tempDb = [];
         
         matches.forEach(m => {
             try {
                 const v = JSON.parse(m);
                 if(v.x !== undefined && v.y !== undefined) {
-                    const axe = v.axe || 0, ram = v.ram || 0, snob = v.snob || 0;
                     tempDb.push({
                         player: v.player || v.p || "Desconocido",
                         x: parseInt(v.x), y: parseInt(v.y),
                         ck: `${v.x}|${v.y}`, vid: v.vid || 0,
-                        axe, ram, light: v.light || 0, snob,
-                        // Detección automática de rol
-                        role: (axe >= minAxeDetect) ? 'off' : (snob > 0 ? 'noble' : 'none')
+                        axe: v.axe || 0, ram: v.ram || 0, light: v.light || 0, snob: v.snob || 0,
+                        role: (v.axe >= minAxeDetect || v.ram > 200) ? 'off' : (v.snob > 0 ? 'noble' : 'none')
                     });
                 }
             } catch(e) {}
         });
 
+        // Eliminar duplicados
         db = Array.from(new Map(tempDb.map(item => [item.ck, item])).values());
+        
         renderManager();
         updateStats();
         document.getElementById('v-manager-cont').style.display = "block";
@@ -246,7 +240,6 @@
         const nobles = db.filter(v => v.role === 'noble').length;
         const fakes = db.filter(v => v.role !== 'front').length;
         const targets = parseText('obj-conq').length + parseText('obj-real').length + parseText('obj-fake').length;
-
         document.getElementById('st-offs').innerText = offs;
         document.getElementById('st-nobles').innerText = nobles;
         document.getElementById('st-fakes').innerText = fakes;
@@ -263,7 +256,6 @@
         return list;
     }
 
-    // --- GENERADOR ---
     function generatePlan() {
         const cT = parseText('obj-conq');
         const rT = parseText('obj-real');
@@ -271,14 +263,15 @@
         const vM = parseFloat(document.getElementById('w-speed').value) || 1;
         const arrMs = new Date(document.getElementById('date-arr').value + 'T' + document.getElementById('time-arr').value).getTime();
         const uG = document.getElementById('u-guide').value;
+        const maxFakePerV = parseInt(document.getElementById('cfg-fake-per-v').value) || 5;
 
-        if(isNaN(arrMs)) return alert("Pon fecha y hora correcta.");
+        if(isNaN(arrMs)) return alert("Pon fecha y hora.");
 
         let results = [];
         let usedCount = new Map(); 
         let success = { conq: [], real: [], fake: [] };
 
-        // 1. CONQUISTAS (Pueblos marcados como Noble)
+        // 1. CONQUISTAS
         let noblePool = db.filter(v => v.role === 'noble');
         cT.forEach(t => {
             if(!noblePool.length) return;
@@ -288,7 +281,7 @@
             success.conq.push(t.ck);
         });
 
-        // 2. REALES (Pueblos marcados como Real)
+        // 2. REALES
         let offPool = db.filter(v => v.role === 'off');
         rT.forEach(t => {
             if(!offPool.length) return;
@@ -298,11 +291,10 @@
             success.real.push(t.ck);
         });
 
-        // 3. FAKES (Pueblos que no son Front)
+        // 3. FAKES
         let fakePool = db.filter(v => v.role !== 'front');
-        const maxFakesPerV = parseInt(document.getElementById('cfg-fake-per-v').value) || 5;
-        fT.forEach((t, i) => {
-            const w = fakePool.find(v => (usedCount.get(v.ck)||0) < maxFakesPerV);
+        fT.forEach(t => {
+            const w = fakePool.find(v => (usedCount.get(v.ck)||0) < maxFakePerV);
             if(w) {
                 usedCount.set(w.ck, (usedCount.get(w.ck)||0) + 1);
                 results.push(createOrder(w, t, 'FAKE', arrMs, vM, uG));
@@ -362,7 +354,7 @@
     function copyMP(p) {
         const orders = window.currentPlan[p];
         let bb = `Hola [player]${p}[/player],\n\n[table]\n[**]Tipo[||]Lanzar[||]Origen[||]Destino[||]Tropas[/**]\n`;
-        orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[/coord][|]${o.visual}\n`);
+        orders.forEach(o => bb += `[*]${o.type}[|]${o.launch}[|][coord]${o.orig}[/coord][|][coord]${o.dest}[|]${o.visual}\n`);
         bb += `[/table]`;
         navigator.clipboard.writeText(bb);
         alert("Copiado.");
@@ -376,7 +368,6 @@
             bb += `[/table][/spoiler]\n\n`;
         }
         navigator.clipboard.writeText(bb);
-        alert("Copiado Foro.");
     }
 
     window.onload = () => { document.getElementById('date-arr').value = new Date().toISOString().split('T')[0]; };
